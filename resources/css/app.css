@@ -1,5 +1,45 @@
+/*
+ * Berkas: app.css
+ * Jalur: resources/css/app.css
+ * Tujuan: Berkas entry point CSS utama untuk aplikasi.
+ * Digunakan untuk: Mengimpor framework Tailwind CSS, berkas gaya kustom, dan memberikan penimpaan (override) untuk kestabilan tema.
+ * Referensi: Desain Dasar & Arsitektur Frontend
+ */
+
 @import "./inventra_template.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================
+   PENIMPAAN UTK TEMA GELAP/TERANG (THEME OVERRIDES)
+   ========================================== */
+body {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+}
+
+.topbar {
+    background-color: var(--color-surface) !important;
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+.topbar-search {
+    background-color: var(--color-surface-alt) !important;
+    border: 1px solid var(--color-border) !important;
+}
+
+.topbar-search input {
+    color: var(--color-text) !important;
+}
+
+.icon-btn:hover {
+    background-color: var(--color-surface-alt) !important;
+    border-color: var(--color-border) !important;
+}
+
+.user-chip:hover {
+    background-color: var(--color-surface-alt) !important;
+    border-color: var(--color-border) !important;
+}
