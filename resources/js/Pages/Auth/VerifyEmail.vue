@@ -1,8 +1,20 @@
+<!--
+ * Berkas: VerifyEmail.vue
+ * Jalur: resources/js/Pages/Auth/VerifyEmail.vue
+ * Tujuan: Menyediakan antarmuka instruksi verifikasi alamat email setelah pendaftaran akun baru.
+ * Digunakan untuk: Memberi tahu pengguna untuk memverifikasi tautan pada kotak masuk email mereka atau mengirim ulang tautan verifikasi.
+ * Referensi: Desain Dasar Inventra
+ -->
+
 <script setup>
 import { computed } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+
+// ==========================================
+// KONFIGURASI & FORM SUBMIT
+// ==========================================
 
 const props = defineProps({
     status: {
