@@ -9,6 +9,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import { Toaster } from 'vue-sonner';
 
 // ==========================================
 // KONFIGURASI & MANAJEMEN STATE
@@ -31,6 +32,8 @@ onMounted(() => {
 
 <template>
     <div class="screen font-sans text-text">
+        <!-- Toaster untuk Notifikasi Modern -->
+        <Toaster richColors position="top-right" />
         <!-- ============ LEFT BRAND PANEL ============ -->
         <aside class="brand-panel">
             <div class="brand-deco">

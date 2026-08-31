@@ -10,21 +10,22 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 // ==========================================
 // KONFIGURASI, METODE & DATA MOCK
 // ==========================================
 
 const handleRefresh = () => {
-    alert('Data dashboard diperbarui!');
+    toast.success('Data dasbor berhasil diperbarui!');
 };
 
 const handleNewItem = () => {
-    alert('Aksi "Item Baru" akan membuka form pendaftaran barang pada Sprint 04.');
+    toast.info('Aksi "Item Baru" akan membuka form pendaftaran barang pada Sprint 04.');
 };
 
 const handleSeeAllTx = () => {
-    alert('Mengarahkan ke modul riwayat mutasi barang pada Sprint 11.');
+    toast.info('Mengarahkan ke modul riwayat mutasi barang pada Sprint 11.');
 };
 
 // Data Mock Statistik

@@ -9,6 +9,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import { Toaster, toast } from 'vue-sonner';
 
 // ==========================================
 // KONFIGURASI & MANAJEMEN STATE
@@ -53,12 +54,14 @@ onMounted(() => {
 });
 
 const handleMockFeature = (name) => {
-    alert(`Modul "${name}" belum diaktifkan. Modul ini akan diimplementasikan pada Sprint berikutnya.`);
+    toast.info(`Modul "${name}" belum diaktifkan. Modul ini akan diimplementasikan pada Sprint berikutnya.`);
 };
 </script>
 
 <template>
     <div class="app-shell font-sans text-text">
+        <!-- Toaster untuk Notifikasi Modern -->
+        <Toaster richColors position="top-right" />
         <!-- Scrim for mobile sidebar -->
         <div 
             class="scrim" 

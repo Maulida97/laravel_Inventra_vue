@@ -10,6 +10,7 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 // ==========================================
 // KONFIGURASI, STATE & AKSI
@@ -43,7 +44,7 @@ const submit = () => {
 };
 
 const handleSSO = () => {
-    alert('Autentikasi Single Sign-On (SSO) akan diintegrasikan pada Sprint berikutnya.');
+    toast.info('Autentikasi Single Sign-On (SSO) akan diintegrasikan pada Sprint berikutnya.');
 };
 </script>
 
