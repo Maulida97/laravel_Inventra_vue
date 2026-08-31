@@ -1,0 +1,1492 @@
+# Inventra
+
+## Sprint 16 — Export
+
+**Sprint:** SPRINT-16
+**Name:** Export
+**Project:** Inventra
+**Status:** Planned
+**Branch:** `feature/export`
+
+---
+
+# 1. Sprint Overview
+
+Fitur Export memungkinkan user yang memiliki permission untuk mengekspor data Inventra.
+
+Format utama:
+
+```text
+Excel (.xlsx)
+CSV (.csv)
+```
+
+PDF **tidak menjadi fokus sprint ini**, karena kebutuhan PDF lebih cocok untuk dokumen/report dengan layout khusus.
+
+Flow:
+
+```text
+User
+ ↓
+Filter Data
+ ↓
+Authorization
+ ↓
+Export Request
+ ↓
+Export Service
+ ↓
+Query
+ ↓
+Generate File
+ ↓
+Download
+```
+
+---
+
+# 2. Objective
+
+Export harus:
+
+```text
+Mudah digunakan
+Aman
+Sesuai permission
+Mengikuti filter
+Tidak membebani database
+Memiliki format konsisten
+```
+
+---
+
+# 3. Scope
+
+### Included
+
+```text
+Item Export
+Warehouse Export
+Inventory Export
+Stock Movement Export
+Transaction Export
+Asset Export
+Stock Opname Export
+Audit Log Export
+CSV
+Excel
+Filtering
+Date Range
+Permission
+Export History
+Large Dataset Handling
+```
+
+### Not Included
+
+```text
+PDF Generator
+Scheduled Email Report
+Cloud Storage Export
+BI Integration
+Real-time Streaming Export
+```
+
+---
+
+# 4. Export Principle
+
+Export harus menggunakan **query/service yang sama secara konsep** dengan module terkait.
+
+Jangan membuat business logic baru hanya untuk export.
+
+```text
+Reporting / Module Service
+        ↓
+Export Query
+        ↓
+Export File
+```
+
+---
+
+# 5. Permission
+
+Gunakan permission khusus:
+
+```text
+export.items
+export.inventory
+export.stock
+export.transactions
+export.assets
+export.stock-opname
+export.audit-log
+```
+
+User hanya dapat export data yang memang boleh dilihat.
+
+---
+
+# 6. Authorization
+
+Urutan:
+
+```text
+Authentication
+ ↓
+RBAC
+ ↓
+Warehouse Scope
+ ↓
+Export Permission
+ ↓
+Query
+```
+
+Export **tidak boleh menjadi cara untuk bypass authorization**.
+
+---
+
+# 7. Warehouse Scope
+
+Jika user hanya memiliki akses:
+
+```text
+Warehouse A
+```
+
+maka export:
+
+```text
+Warehouse A
+```
+
+saja.
+
+Tidak boleh:
+
+```text
+Export All Warehouses
+```
+
+dengan mengubah parameter request.
+
+Backend harus tetap memvalidasi scope.
+
+---
+
+# 8. Exportable Data
+
+## Items
+
+```text
+SKU
+Name
+Category
+Unit
+Minimum Stock
+Status
+Created At
+```
+
+---
+
+## Warehouses
+
+```text
+Code
+Name
+Location
+Status
+Created At
+```
+
+---
+
+## Inventory
+
+```text
+Warehouse
+Item
+SKU
+Quantity
+Reserved
+Available
+Minimum Stock
+Status
+```
+
+---
+
+## Stock Movement
+
+```text
+Date
+Transaction Number
+Type
+Item
+SKU
+Warehouse
+Quantity
+User
+Reference
+```
+
+---
+
+## Transactions
+
+```text
+Transaction Number
+Type
+Status
+Warehouse
+Created By
+Approved By
+Created At
+Approved At
+```
+
+---
+
+## Assets
+
+```text
+Asset Code
+Item
+Category
+Serial Number
+Warehouse
+Assigned To
+Status
+Condition
+Purchase Date
+```
+
+---
+
+## Stock Opname
+
+```text
+Opname Number
+Warehouse
+Item
+System Quantity
+Physical Quantity
+Difference
+Status
+Created By
+Approved By
+Date
+```
+
+---
+
+## Audit Log
+
+```text
+Date
+User
+Event
+Module
+Entity
+Entity ID
+IP Address
+```
+
+Sensitive fields tetap dikeluarkan.
+
+---
+
+# 9. Export Filters
+
+Export harus mengikuti filter yang tersedia pada module.
+
+Contoh:
+
+```text
+Date Range
+Warehouse
+Category
+Item
+Status
+Transaction Type
+User
+```
+
+Contoh request:
+
+```text
+warehouse_id=1
+from=2026-08-01
+to=2026-08-30
+status=approved
+```
+
+---
+
+# 10. Filter Consistency
+
+Jika user melihat:
+
+```text
+Stock Movement
+Warehouse A
+August 2026
+```
+
+kemudian memilih:
+
+```text
+Export
+```
+
+maka file harus menggunakan filter yang sama.
+
+Flow:
+
+```text
+Current Filters
+      ↓
+Export Request
+      ↓
+Same Filter Rules
+      ↓
+Export
+```
+
+---
+
+# 11. Export All
+
+Export tanpa filter boleh jika permission mengizinkan.
+
+Tetapi:
+
+```text
+Export All
+```
+
+tetap harus mengikuti:
+
+```text
+Authorization
+Warehouse Scope
+```
+
+"All" berarti:
+
+```text
+All data that the user is allowed to access.
+```
+
+Bukan seluruh database.
+
+---
+
+# 12. CSV
+
+CSV cocok untuk:
+
+```text
+Large Dataset
+Data Analysis
+Import to Spreadsheet
+Data Processing
+```
+
+Contoh:
+
+```text
+item_code,item_name,warehouse,quantity
+ITM-001,Laptop,WH-JKT,25
+```
+
+---
+
+# 13. Excel
+
+Excel digunakan untuk user-facing export.
+
+Format:
+
+```text
+.xlsx
+```
+
+Spreadsheet dapat memiliki:
+
+```text
+Header
+Data
+Column Formatting
+Date Formatting
+Number Formatting
+```
+
+Tidak perlu membuat styling kompleks.
+
+---
+
+# 14. File Naming
+
+Gunakan nama konsisten.
+
+Contoh:
+
+```text
+inventory_2026-08-30.xlsx
+```
+
+atau:
+
+```text
+stock-movement_2026-08-01_2026-08-30.xlsx
+```
+
+Format:
+
+```text
+{resource}_{date/filter}.{extension}
+```
+
+---
+
+# 15. Export Metadata
+
+File dapat menyertakan informasi:
+
+```text
+Report Name
+Generated At
+Generated By
+Filter
+```
+
+Untuk Excel, metadata dapat ditempatkan di sheet terpisah jika diperlukan.
+
+---
+
+# 16. Large Dataset
+
+Jangan mengambil jutaan record ke memory sekaligus.
+
+Hindari:
+
+```php
+$data = Model::all();
+```
+
+Untuk dataset besar gunakan:
+
+```text
+Chunking
+Lazy Collection
+Cursor
+Streaming
+Queued Export
+```
+
+sesuai kebutuhan implementation.
+
+---
+
+# 17. Query Optimization
+
+Export query harus dievaluasi.
+
+Gunakan:
+
+```text
+Indexes
+Select Only Required Columns
+Joins yang diperlukan
+Pagination/Chunk
+EXPLAIN
+```
+
+Jangan:
+
+```text
+SELECT *
+```
+
+jika hanya membutuhkan beberapa field.
+
+---
+
+# 18. N+1 Prevention
+
+Hindari:
+
+```text
+Export
+ ↓
+1000 rows
+ ↓
+1000 additional queries
+```
+
+Gunakan:
+
+```text
+Eager Loading
+Joins
+Optimized Query
+```
+
+sesuai kebutuhan.
+
+---
+
+# 19. Export Service
+
+Gunakan service khusus:
+
+```text
+app/Services/Export/
+├── ExportService.php
+├── ItemExportService.php
+├── InventoryExportService.php
+├── StockExportService.php
+├── TransactionExportService.php
+├── AssetExportService.php
+├── StockOpnameExportService.php
+└── AuditLogExportService.php
+```
+
+Struktur final dapat disederhanakan jika implementation lebih efektif.
+
+---
+
+# 20. Export Contract
+
+Jika diperlukan, gunakan interface:
+
+```text
+Exportable
+```
+
+Konsep:
+
+```text
+Export Service
+      ↓
+Resource-specific Export
+      ↓
+File Generator
+```
+
+Tujuannya menjaga consistency.
+
+---
+
+# 21. Controller Responsibility
+
+Controller:
+
+```text
+Receive Request
+Validate
+Authorize
+Call Export Service
+Return File
+```
+
+Bukan:
+
+```text
+Controller
+ ↓
+Build 200-line query
+ ↓
+Format Excel
+ ↓
+Business Logic
+```
+
+---
+
+# 22. Request Validation
+
+Export request harus divalidasi.
+
+Contoh:
+
+```text
+from
+to
+warehouse_id
+status
+format
+```
+
+Format:
+
+```text
+csv
+xlsx
+```
+
+hanya nilai yang diizinkan.
+
+---
+
+# 23. Date Range
+
+Validasi:
+
+```text
+from <= to
+```
+
+Contoh invalid:
+
+```text
+from=2026-08-30
+to=2026-08-01
+```
+
+Request harus ditolak.
+
+---
+
+# 24. Maximum Date Range
+
+Untuk mencegah query terlalu berat, endpoint dapat memiliki batas date range.
+
+Contoh:
+
+```text
+Maximum:
+1 year
+```
+
+Nilai final ditentukan berdasarkan performance testing.
+
+Jika membutuhkan data lebih lama:
+
+```text
+Export by period
+```
+
+---
+
+# 25. Async Export
+
+Untuk export besar:
+
+```text
+User
+ ↓
+Request Export
+ ↓
+Queue
+ ↓
+Generate File
+ ↓
+Export Ready
+ ↓
+Download
+```
+
+Tidak perlu membuat user menunggu HTTP request yang sangat lama.
+
+---
+
+# 26. Queue
+
+Jika asynchronous export diterapkan:
+
+```text
+ExportJob
+```
+
+Flow:
+
+```text
+API/Web
+ ↓
+Dispatch Job
+ ↓
+Queue Worker
+ ↓
+Generate Export
+ ↓
+Store File
+ ↓
+Mark Completed
+```
+
+---
+
+# 27. Export Status
+
+Untuk asynchronous export:
+
+```text
+PENDING
+PROCESSING
+COMPLETED
+FAILED
+```
+
+User dapat melihat:
+
+```text
+Export History
+```
+
+---
+
+# 28. Export History
+
+Minimal:
+
+```text
+Export ID
+User
+Type
+Format
+Status
+Created At
+Completed At
+```
+
+Contoh:
+
+```text
+EXP-0001
+Budi
+Stock Movement
+Excel
+Completed
+30 Aug 2026 14:30
+```
+
+---
+
+# 29. Export Storage
+
+Untuk synchronous export:
+
+```text
+Generate
+ ↓
+Response Download
+```
+
+Untuk asynchronous:
+
+```text
+Generate
+ ↓
+Temporary Storage
+ ↓
+Download
+ ↓
+Expiration
+```
+
+File temporary tidak disimpan selamanya.
+
+---
+
+# 30. File Access
+
+Download export harus melalui authorization.
+
+Jangan:
+
+```text
+/storage/export/EXP-001.xlsx
+```
+
+yang dapat diakses siapa pun yang mengetahui URL.
+
+Gunakan:
+
+```text
+Authenticated Request
+ ↓
+Authorization
+ ↓
+Download
+```
+
+---
+
+# 31. Export Security
+
+Protect against:
+
+```text
+Unauthorized Export
+IDOR
+Sensitive Data Exposure
+Path Traversal
+CSV Injection
+Large Query Abuse
+File Access Bypass
+```
+
+---
+
+# 32. CSV Injection
+
+Jika CSV dibuka di spreadsheet application, value tertentu dapat dianggap sebagai formula.
+
+Contoh berbahaya:
+
+```text
+=SUM(...)
+```
+
+Data yang berasal dari user harus ditangani dengan aman untuk mencegah formula injection.
+
+---
+
+# 33. Audit Export
+
+Export adalah aktivitas yang sebaiknya dicatat.
+
+Contoh:
+
+```text
+User:
+Budi
+
+Event:
+EXPORT
+
+Resource:
+Stock Movement
+
+Format:
+XLSX
+
+Filter:
+Warehouse A
+August 2026
+```
+
+Audit mengikuti:
+
+```text
+SPRINT-14-AUDIT-LOG
+```
+
+---
+
+# 34. API Export
+
+Jika API mengizinkan export:
+
+```text
+GET /api/v1/items/export
+```
+
+atau endpoint khusus sesuai API design.
+
+Tetap gunakan:
+
+```text
+Authentication
+Authorization
+Warehouse Scope
+Rate Limit
+```
+
+---
+
+# 35. API Response
+
+Untuk synchronous:
+
+```text
+200
+Content-Type: application/vnd.openxmlformats...
+```
+
+Untuk asynchronous:
+
+```json
+{
+  "data": {
+    "id": "EXP-0001",
+    "status": "PENDING"
+  }
+}
+```
+
+---
+
+# 36. Frontend Structure
+
+```text
+resources/js/
+├── Pages/
+│   └── Exports/
+│       └── Index.vue
+│
+└── Components/
+    └── Export/
+        ├── ExportButton.vue
+        ├── ExportModal.vue
+        ├── ExportFilters.vue
+        └── ExportHistory.vue
+```
+
+Export button juga dapat ditempatkan pada masing-masing module.
+
+---
+
+# 37. Export UX
+
+Flow:
+
+```text
+User
+ ↓
+Filter
+ ↓
+Click Export
+ ↓
+Choose Format
+ ↓
+Confirm
+ ↓
+Generate
+ ↓
+Download
+```
+
+Untuk export besar:
+
+```text
+Request submitted
+ ↓
+Processing
+ ↓
+Ready
+ ↓
+Download
+```
+
+---
+
+# 38. Loading State
+
+Frontend harus menampilkan state:
+
+```text
+Idle
+Loading
+Success
+Error
+```
+
+Untuk async:
+
+```text
+Queued
+Processing
+Completed
+Failed
+```
+
+---
+
+# 39. Error Handling
+
+Contoh:
+
+```text
+No data
+Invalid filter
+Unauthorized
+Export failed
+File unavailable
+Server error
+```
+
+Pesan harus jelas kepada user.
+
+---
+
+# 40. No Data
+
+Jika tidak ada data:
+
+```text
+No data available for the selected filters.
+```
+
+Jangan membuat file kosong tanpa penjelasan kecuali memang desain UX mengharuskannya.
+
+---
+
+# 41. Testing
+
+### Authorization
+
+```text
+[ ] Allowed user can export
+[ ] Unauthorized user blocked
+[ ] Warehouse scope enforced
+[ ] IDOR blocked
+```
+
+### Data
+
+```text
+[ ] Export matches UI filters
+[ ] No unauthorized records
+[ ] Values correct
+[ ] Dates correct
+[ ] Quantities correct
+```
+
+### Format
+
+```text
+[ ] CSV valid
+[ ] XLSX valid
+[ ] Filename valid
+[ ] Headers correct
+```
+
+---
+
+# 42. Performance Testing
+
+Test:
+
+```text
+1,000 rows
+10,000 rows
+100,000 rows
+```
+
+jika dataset tersedia.
+
+Measure:
+
+```text
+Execution Time
+Memory
+Query Count
+File Generation Time
+Database Load
+```
+
+Gunakan:
+
+```text
+EXPLAIN
+```
+
+untuk query utama.
+
+---
+
+# 43. Security Testing
+
+```text
+[ ] IDOR
+[ ] Unauthorized export
+[ ] Warehouse bypass
+[ ] CSV injection
+[ ] Path traversal
+[ ] File access
+[ ] Sensitive data
+```
+
+---
+
+# 44. Code Documentation
+
+Semua file mengikuti:
+
+```text
+docs/code-guide/00_CODE_DOCUMENTATION_STANDARD.md
+```
+
+Contoh:
+
+```php
+/**
+ * Inventory Export Service
+ *
+ * Purpose:
+ * Generate inventory export files based on
+ * authorized filters.
+ *
+ * Responsibility:
+ * - Build export query
+ * - Apply authorization scope
+ * - Apply filters
+ * - Generate output
+ *
+ * Performance:
+ * Large datasets must not be loaded entirely
+ * into application memory.
+ *
+ * Security:
+ * Export must never bypass warehouse scope
+ * or RBAC permissions.
+ */
+```
+
+---
+
+# 45. Maintenance Guide
+
+### "Export datanya berbeda dengan tabel."
+
+Trace:
+
+```text
+Export Button
+ ↓
+Export Request
+ ↓
+Export Controller
+ ↓
+Export Service
+ ↓
+Query
+```
+
+Bandingkan filter dan scope.
+
+---
+
+### "Export sangat lambat."
+
+Trace:
+
+```text
+Export Service
+ ↓
+Query
+ ↓
+EXPLAIN
+ ↓
+Indexes
+ ↓
+N+1
+ ↓
+Dataset Size
+```
+
+---
+
+### "User bisa export warehouse lain."
+
+Trace:
+
+```text
+Export Controller
+ ↓
+Authorization
+ ↓
+Warehouse Scope
+ ↓
+Export Query
+```
+
+Pastikan scope diterapkan **sebelum data diambil**.
+
+---
+
+### "File export tidak bisa dibuka."
+
+Periksa:
+
+```text
+Export Generator
+ ↓
+File Format
+ ↓
+Encoding
+ ↓
+File Storage
+ ↓
+Response Headers
+```
+
+---
+
+# 46. Code Understanding Map
+
+```text
+Export Button
+      ↓
+Export Request
+      ↓
+Controller
+      ↓
+Authorization
+      ↓
+Export Service
+      ↓
+Query
+      ↓
+File Generator
+      ↓
+Download
+```
+
+Untuk memahami fitur:
+
+```text
+1. Cari Export Button
+2. Cari route
+3. Cari Controller
+4. Cari Authorization
+5. Cari Export Service
+6. Cari Query
+7. Cari File Generator
+8. Cari Test
+```
+
+---
+
+# 47. Expected Files
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   └── ExportController.php
+│   └── Requests/
+│       └── ExportRequest.php
+│
+├── Services/
+│   └── Export/
+│       ├── ExportService.php
+│       ├── ItemExportService.php
+│       ├── InventoryExportService.php
+│       ├── StockExportService.php
+│       ├── TransactionExportService.php
+│       ├── AssetExportService.php
+│       ├── StockOpnameExportService.php
+│       └── AuditLogExportService.php
+│
+└── Jobs/
+    └── GenerateExportJob.php
+
+resources/js/
+├── Pages/
+│   └── Exports/
+│       └── Index.vue
+└── Components/
+    └── Export/
+
+tests/
+└── Feature/
+    └── Export/
+```
+
+---
+
+# 48. Git Branch
+
+```text
+feature/export
+```
+
+Dependency:
+
+```text
+SPRINT-12 → Reporting
+SPRINT-14 → Audit Log
+SPRINT-15 → REST API
+SPRINT-16 → Export
+```
+
+---
+
+# 49. Suggested Commits
+
+```text
+feat(export): add export structure
+feat(export): add export permissions
+feat(export): add item export
+feat(export): add inventory export
+feat(export): add stock export
+feat(export): add transaction export
+feat(export): add asset export
+feat(export): add stock opname export
+feat(export): add audit log export
+feat(export): add csv export
+feat(export): add xlsx export
+feat(export): add export filters
+feat(export): add export history
+feat(export): add queued export
+feat(export): add export authorization
+feat(export): add warehouse scope
+feat(export): add export audit logging
+perf(export): optimize export queries
+test(export): add export tests
+test(export): add export security tests
+docs(export): add export documentation
+```
+
+---
+
+# 50. Acceptance Criteria
+
+Sprint selesai apabila:
+
+```text
+1. Export module tersedia.
+
+2. CSV tersedia.
+
+3. Excel tersedia.
+
+4. Export permission tersedia.
+
+5. RBAC diterapkan.
+
+6. Warehouse scope diterapkan.
+
+7. IDOR protection tersedia.
+
+8. Item dapat diexport.
+
+9. Inventory dapat diexport.
+
+10. Stock movement dapat diexport.
+
+11. Transactions dapat diexport.
+
+12. Assets dapat diexport.
+
+13. Stock Opname dapat diexport.
+
+14. Audit Log dapat diexport jika diizinkan.
+
+15. Filter diterapkan ke export.
+
+16. Date range validation tersedia.
+
+17. Large dataset tidak dimuat sekaligus ke memory.
+
+18. Query performance dievaluasi.
+
+19. N+1 dicegah.
+
+20. Export file memiliki filename konsisten.
+
+21. Export download dilindungi authorization.
+
+22. CSV injection ditangani.
+
+23. Export activity dicatat ke Audit Log.
+
+24. Async export tersedia jika dataset membutuhkan.
+
+25. Export history tersedia jika async export digunakan.
+
+26. API export mengikuti security model API.
+
+27. Automated tests berhasil.
+
+28. Security tests berhasil.
+
+29. Performance tests berhasil.
+
+30. Code documentation mengikuti standard Inventra.
+
+31. Developer dapat tracing Export Button → Controller → Service → Query → File.
+```
+
+---
+
+# 51. Definition of Done
+
+```text
+Export
+    ✓ CSV
+    ✓ Excel
+    ✓ Filtering
+    ✓ Permission
+    ✓ Warehouse Scope
+    ✓ Audit
+
+Performance
+    ✓ Chunk/Lazy/Queue strategy
+    ✓ No unnecessary N+1
+    ✓ Query reviewed
+    ✓ EXPLAIN
+
+Security
+    ✓ RBAC
+    ✓ IDOR Protection
+    ✓ CSV Injection Protection
+    ✓ File Access Protection
+    ✓ Sensitive Data Protection
+
+Testing
+    ✓ Functional
+    ✓ Security
+    ✓ Performance
+
+Documentation
+    ✓ Code Comments
+    ✓ Maintenance Guide
+    ✓ API Documentation if applicable
+
+Git
+    ✓ feature/export
+```
+
+---
+
+# 52. Final Principle
+
+Export Inventra harus mengikuti aturan:
+
+```text
+USER CAN SEE
+       ↓
+USER CAN EXPORT
+```
+
+tetapi:
+
+```text
+USER CANNOT SEE
+       ↓
+USER CANNOT EXPORT
+```
+
+Export bukan jalur alternatif untuk mengambil data yang tidak boleh diakses.
+
+Dan untuk data besar:
+
+```text
+Database
+   ↓
+Optimized Query
+   ↓
+Stream / Chunk / Queue
+   ↓
+Export File
+```
+
+bukan:
+
+```text
+Database
+   ↓
+Load Everything
+   ↓
+Memory
+   ↓
+Crash
+```

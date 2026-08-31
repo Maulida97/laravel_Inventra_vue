@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventra — Inventory Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   INVENTRA — DESIGN TOKENS
+   ============================================================ */
+:root{
+  /* 60% — dominant neutral */
+  --color-bg: #F5F6F8;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F0F2F5;
+  --color-border: #E2E5EA;
+  --color-border-strong: #CBD1DA;
+
+  /* 30% — secondary (trust / stability) */
+  --color-secondary: #14324F;      /* deep navy */
+  --color-secondary-600: #1B4066;
+  --color-secondary-500: #24537F;
+  --color-secondary-100: #E7EDF3;
+
+  /* 10% — accent (used sparingly) */
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-accent-100: #E8EFFE;
+
+  /* text */
+  --color-text: #16202B;
+  --color-text-secondary: #4A5567;
+  --color-muted: #7C8896;
+  --color-on-secondary: #EAF0F7;
+  --color-on-accent: #FFFFFF;
+
+  /* semantic */
+  --color-success: #17825A;
+  --color-success-bg: #E5F5EE;
+  --color-warning: #B45F06;
+  --color-warning-bg: #FCF0DF;
+  --color-error: #C0362C;
+  --color-error-bg: #FBEAE8;
+  --color-info: #2563EB;
+  --color-info-bg: #E8EFFE;
+  --color-neutral-badge-bg: #EEF0F3;
+  --color-neutral-badge-text: #566073;
+
+  /* elevation */
+  --shadow-xs: 0 1px 2px rgba(16,24,40,0.05);
+  --shadow-sm: 0 1px 3px rgba(16,24,40,0.08), 0 1px 2px rgba(16,24,40,0.04);
+  --shadow-md: 0 4px 12px rgba(16,24,40,0.10);
+  --shadow-lg: 0 12px 32px rgba(16,24,40,0.16);
+
+  /* radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* spacing scale */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+
+  /* layout */
+  --sidebar-w: 252px;
+  --sidebar-w-collapsed: 76px;
+  --header-h: 64px;
+
+  --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --transition: 150ms ease;
+}
+
+[data-theme="dark"]{
+  --color-bg: #0E151D;
+  --color-surface: #161F29;
+  --color-surface-alt: #1C2733;
+  --color-border: #2A3644;
+  --color-border-strong: #3A4756;
+
+  --color-secondary: #0B1B2B;
+  --color-secondary-600: #12283D;
+  --color-secondary-500: #1A3A56;
+  --color-secondary-100: #1C2C3E;
+
+  --color-accent: #4A85F5;
+  --color-accent-hover: #6B9BF7;
+  --color-accent-100: #17263B;
+
+  --color-text: #E7ECF2;
+  --color-text-secondary: #AEB9C7;
+  --color-muted: #7C8896;
+  --color-on-secondary: #DCE6F0;
+  --color-on-accent: #08111C;
+
+  --color-success: #34C58C;
+  --color-success-bg: #123227;
+  --color-warning: #E5A445;
+  --color-warning-bg: #33260F;
+  --color-error: #E5766C;
+  --color-error-bg: #331714;
+  --color-info: #6B9BF7;
+  --color-info-bg: #17263B;
+  --color-neutral-badge-bg: #24303D;
+  --color-neutral-badge-text: #AEB9C7;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.4);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.5);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--color-bg);
+  color:var(--color-text);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p{ margin:0; }
+button{ font-family:inherit; }
+a{ color:inherit; }
+::selection{ background:var(--color-accent-100); }
+:focus-visible{ outline:2px solid var(--color-accent); outline-offset:2px; border-radius:4px; }
+button:focus-visible, a:focus-visible{ outline:2px solid var(--color-accent); outline-offset:2px; }
+
+/* scrollbar */
+::-webkit-scrollbar{ width:8px; height:8px; }
+::-webkit-scrollbar-track{ background:transparent; }
+::-webkit-scrollbar-thumb{ background:var(--color-border-strong); border-radius:8px; }
+
+/* ============================================================
+   TYPE SCALE
+   ============================================================ */
+.text-page-title{ font-size:22px; font-weight:700; letter-spacing:-0.01em; color:var(--color-text); }
+.text-section-title{ font-size:16px; font-weight:600; color:var(--color-text); }
+.text-card-title{ font-size:13px; font-weight:600; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:0.04em; }
+.text-body{ font-size:14px; font-weight:400; color:var(--color-text); }
+.text-label{ font-size:13px; font-weight:500; color:var(--color-text); }
+.text-helper{ font-size:12.5px; font-weight:400; color:var(--color-muted); }
+.text-caption{ font-size:12px; font-weight:500; color:var(--color-muted); }
+.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app-shell{ display:flex; min-height:100vh; }
+
+/* ---- Sidebar ---- */
+.sidebar{
+  width:var(--sidebar-w);
+  flex-shrink:0;
+  background:var(--color-secondary);
+  color:var(--color-on-secondary);
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0; left:0; bottom:0;
+  z-index:40;
+  transition:width var(--transition), transform var(--transition);
+  overflow:hidden;
+}
+.sidebar.collapsed{ width:var(--sidebar-w-collapsed); }
+.sidebar-brand{
+  height:var(--header-h);
+  display:flex; align-items:center; gap:10px;
+  padding:0 var(--sp-4);
+  flex-shrink:0;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.sidebar-brand-mark{
+  width:30px; height:30px; border-radius:8px;
+  background:var(--color-accent);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.sidebar-brand-mark svg{ width:17px; height:17px; }
+.sidebar-brand-text{ font-size:16px; font-weight:700; color:#fff; white-space:nowrap; opacity:1; transition:opacity var(--transition); }
+.sidebar.collapsed .sidebar-brand-text{ opacity:0; width:0; }
+
+.sidebar-nav{ flex:1; overflow-y:auto; padding:var(--sp-3) var(--sp-3) var(--sp-5); }
+.nav-group{ margin-top:var(--sp-4); }
+.nav-group:first-child{ margin-top:0; }
+.nav-group-label{
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;
+  color:rgba(234,240,247,0.42);
+  padding:0 var(--sp-3); margin-bottom:6px; white-space:nowrap;
+}
+.sidebar.collapsed .nav-group-label{ opacity:0; height:0; margin:0; overflow:hidden; }
+
+.nav-item{
+  display:flex; align-items:center; gap:12px;
+  padding:9px var(--sp-3);
+  border-radius:var(--radius-md);
+  color:rgba(234,240,247,0.78);
+  font-size:13.5px; font-weight:500;
+  cursor:pointer; text-decoration:none;
+  margin-bottom:2px;
+  border:none; background:transparent; width:100%; text-align:left;
+  white-space:nowrap;
+  transition:background var(--transition), color var(--transition);
+  position:relative;
+}
+.nav-item svg{ width:18px; height:18px; flex-shrink:0; opacity:0.9; }
+.nav-item:hover{ background:rgba(255,255,255,0.07); color:#fff; }
+.nav-item.active{ background:var(--color-accent); color:#fff; }
+.nav-item.active svg{ opacity:1; }
+.nav-item .nav-label{ overflow:hidden; text-overflow:ellipsis; }
+.sidebar.collapsed .nav-item .nav-label{ display:none; }
+.sidebar.collapsed .nav-item{ justify-content:center; padding:9px; }
+.nav-sub{ padding-left:14px; border-left:1px solid rgba(255,255,255,0.1); margin-left:22px; }
+.sidebar.collapsed .nav-sub{ display:none; }
+
+.sidebar-footer{
+  padding:var(--sp-3); border-top:1px solid rgba(255,255,255,0.08); flex-shrink:0;
+}
+.sidebar-collapse-btn{
+  display:flex; align-items:center; gap:10px; width:100%;
+  padding:8px var(--sp-3); border-radius:var(--radius-md);
+  background:transparent; border:none; color:rgba(234,240,247,0.6);
+  cursor:pointer; font-size:12.5px; font-weight:500;
+}
+.sidebar-collapse-btn:hover{ background:rgba(255,255,255,0.07); color:#fff; }
+.sidebar-collapse-btn svg{ width:16px; height:16px; flex-shrink:0; transition:transform var(--transition); }
+.sidebar.collapsed .sidebar-collapse-btn svg{ transform:rotate(180deg); }
+.sidebar.collapsed .sidebar-collapse-btn span{ display:none; }
+
+/* ---- Main column ---- */
+.main-col{
+  margin-left:var(--sidebar-w);
+  flex:1; min-width:0;
+  display:flex; flex-direction:column;
+  transition:margin-left var(--transition);
+}
+.sidebar.collapsed ~ .main-col{ margin-left:var(--sidebar-w-collapsed); }
+
+/* ---- Header ---- */
+.topbar{
+  height:var(--header-h);
+  background:var(--color-surface);
+  border-bottom:1px solid var(--color-border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 var(--sp-5);
+  position:sticky; top:0; z-index:30;
+  gap:var(--sp-4);
+}
+.topbar-left{ display:flex; align-items:center; gap:var(--sp-3); min-width:0; flex:1; }
+.icon-btn{
+  width:36px; height:36px; border-radius:var(--radius-md);
+  display:flex; align-items:center; justify-content:center;
+  background:transparent; border:1px solid transparent; color:var(--color-text-secondary);
+  cursor:pointer; flex-shrink:0;
+}
+.icon-btn:hover{ background:var(--color-surface-alt); border-color:var(--color-border); color:var(--color-text); }
+.icon-btn svg{ width:18px; height:18px; }
+.mobile-menu-btn{ display:none; }
+
+.topbar-search{
+  display:flex; align-items:center; gap:8px;
+  background:var(--color-surface-alt);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-md);
+  padding:0 var(--sp-3);
+  height:38px; width:100%; max-width:340px;
+  color:var(--color-muted);
+}
+.topbar-search svg{ width:16px; height:16px; flex-shrink:0; }
+.topbar-search input{
+  border:none; background:transparent; outline:none; width:100%;
+  font-family:inherit; font-size:13.5px; color:var(--color-text);
+}
+.topbar-search input::placeholder{ color:var(--color-muted); }
+.topbar-search .kbd{
+  font-size:11px; font-weight:600; color:var(--color-muted);
+  border:1px solid var(--color-border-strong); border-radius:4px; padding:1px 5px; flex-shrink:0;
+}
+
+.topbar-right{ display:flex; align-items:center; gap:var(--sp-2); flex-shrink:0; }
+.role-select{
+  height:36px; border-radius:var(--radius-md); border:1px solid var(--color-border);
+  background:var(--color-surface); color:var(--color-text-secondary); font-family:inherit;
+  font-size:12.5px; font-weight:600; padding:0 10px; cursor:pointer;
+}
+.divider-v{ width:1px; height:24px; background:var(--color-border); margin:0 2px; }
+
+.user-chip{ display:flex; align-items:center; gap:9px; cursor:pointer; padding:4px 8px 4px 4px; border-radius:var(--radius-md); border:1px solid transparent; background:none; }
+.user-chip:hover{ background:var(--color-surface-alt); border-color:var(--color-border); }
+.avatar{
+  width:32px; height:32px; border-radius:50%;
+  background:var(--color-secondary); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12.5px; font-weight:700; flex-shrink:0;
+}
+.user-chip-text{ text-align:left; display:none; }
+.user-chip-name{ font-size:12.5px; font-weight:600; color:var(--color-text); line-height:1.2; }
+.user-chip-role{ font-size:11px; color:var(--color-muted); line-height:1.2; }
+@media (min-width:900px){ .user-chip-text{ display:block; } }
+
+/* ---- Content ---- */
+.content{ padding:var(--sp-5); flex:1; max-width:1360px; width:100%; }
+.page{ display:none; animation:fadeIn 180ms ease; }
+.page.active{ display:block; }
+@keyframes fadeIn{ from{ opacity:0; transform:translateY(4px); } to{ opacity:1; transform:translateY(0); } }
+
+.breadcrumb{ display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--color-muted); margin-bottom:6px; }
+.breadcrumb a{ color:var(--color-muted); text-decoration:none; }
+.breadcrumb a:hover{ color:var(--color-text); }
+.breadcrumb .sep{ opacity:0.6; }
+.breadcrumb .current{ color:var(--color-text-secondary); font-weight:600; }
+
+.page-header{ display:flex; align-items:flex-start; justify-content:space-between; gap:var(--sp-4); margin-bottom:var(--sp-5); flex-wrap:wrap; }
+.page-header-text p{ margin-top:4px; }
+.page-header-actions{ display:flex; gap:var(--sp-2); flex-shrink:0; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  height:38px; padding:0 var(--sp-4);
+  border-radius:var(--radius-md);
+  font-size:13.5px; font-weight:600;
+  border:1px solid transparent; cursor:pointer;
+  transition:background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition);
+  white-space:nowrap;
+}
+.btn svg{ width:16px; height:16px; flex-shrink:0; }
+.btn-primary{ background:var(--color-accent); color:var(--color-on-accent); }
+.btn-primary:hover{ background:var(--color-accent-hover); }
+.btn-secondary{ background:var(--color-surface); color:var(--color-text); border-color:var(--color-border-strong); }
+.btn-secondary:hover{ background:var(--color-surface-alt); }
+.btn-ghost{ background:transparent; color:var(--color-text-secondary); }
+.btn-ghost:hover{ background:var(--color-surface-alt); color:var(--color-text); }
+.btn-danger{ background:var(--color-error); color:#fff; }
+.btn-danger:hover{ opacity:0.88; }
+.btn-sm{ height:32px; padding:0 12px; font-size:12.5px; }
+.btn:disabled{ opacity:0.45; cursor:not-allowed; }
+.btn-icon-only{ width:38px; padding:0; }
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.field{ display:flex; flex-direction:column; gap:6px; margin-bottom:var(--sp-4); }
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4); }
+.field-label{ font-size:12.5px; font-weight:600; color:var(--color-text); display:flex; gap:4px; }
+.field-label .req{ color:var(--color-error); }
+.input, .select, textarea.input{
+  width:100%; height:38px; border-radius:var(--radius-md);
+  border:1px solid var(--color-border-strong);
+  background:var(--color-surface);
+  padding:0 12px; font-family:inherit; font-size:13.5px; color:var(--color-text);
+  outline:none; transition:border-color var(--transition), box-shadow var(--transition);
+}
+textarea.input{ height:auto; padding:10px 12px; resize:vertical; min-height:76px; }
+.input:hover, .select:hover{ border-color:var(--color-muted); }
+.input:focus, .select:focus, textarea.input:focus{ border-color:var(--color-accent); box-shadow:0 0 0 3px var(--color-accent-100); }
+.input::placeholder{ color:var(--color-muted); }
+.input.has-error, .select.has-error{ border-color:var(--color-error); }
+.input.has-error:focus{ box-shadow:0 0 0 3px var(--color-error-bg); }
+.field-help{ font-size:12px; color:var(--color-muted); }
+.field-error{ font-size:12px; color:var(--color-error); display:none; align-items:center; gap:4px; }
+.field-error svg{ width:13px; height:13px; }
+.field.error .field-error{ display:flex; }
+.select-wrap{ position:relative; }
+.select-wrap::after{
+  content:''; position:absolute; right:12px; top:50%; width:9px; height:9px;
+  border-right:1.6px solid var(--color-muted); border-bottom:1.6px solid var(--color-muted);
+  transform:translateY(-70%) rotate(45deg); pointer-events:none;
+}
+.select{ appearance:none; -webkit-appearance:none; cursor:pointer; padding-right:32px; }
+.input:disabled, .select:disabled{ background:var(--color-surface-alt); color:var(--color-muted); cursor:not-allowed; }
+
+.checkbox-row{ display:flex; align-items:center; gap:8px; }
+.checkbox-row input{ width:16px; height:16px; accent-color:var(--color-accent); cursor:pointer; }
+
+/* ============================================================
+   BADGES / STATUS
+   ============================================================ */
+.badge{
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:11.5px; font-weight:700;
+  padding:3px 9px 3px 7px; border-radius:var(--radius-pill);
+  line-height:1.5; white-space:nowrap;
+}
+.badge .dot{ width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.badge-success{ background:var(--color-success-bg); color:var(--color-success); }
+.badge-success .dot{ background:var(--color-success); }
+.badge-warning{ background:var(--color-warning-bg); color:var(--color-warning); }
+.badge-warning .dot{ background:var(--color-warning); }
+.badge-error{ background:var(--color-error-bg); color:var(--color-error); }
+.badge-error .dot{ background:var(--color-error); }
+.badge-info{ background:var(--color-info-bg); color:var(--color-info); }
+.badge-info .dot{ background:var(--color-info); }
+.badge-neutral{ background:var(--color-neutral-badge-bg); color:var(--color-neutral-badge-text); }
+.badge-neutral .dot{ background:var(--color-neutral-badge-text); }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card{
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-xs);
+}
+.card-pad{ padding:var(--sp-5); }
+.card-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:var(--sp-4) var(--sp-5); border-bottom:1px solid var(--color-border); gap:var(--sp-3);
+}
+.card-body{ padding:var(--sp-5); }
+.card-body.no-pad{ padding:0; }
+
+/* stat cards */
+.stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-bottom:var(--sp-5); }
+.stat-card{ background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--sp-4) var(--sp-5); box-shadow:var(--shadow-xs); }
+.stat-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--sp-3); }
+.stat-icon{ width:34px; height:34px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.stat-icon svg{ width:17px; height:17px; }
+.stat-icon.blue{ background:var(--color-info-bg); color:var(--color-info); }
+.stat-icon.navy{ background:var(--color-secondary-100); color:var(--color-secondary-500); }
+.stat-icon.amber{ background:var(--color-warning-bg); color:var(--color-warning); }
+.stat-icon.green{ background:var(--color-success-bg); color:var(--color-success); }
+.stat-value{ font-size:26px; font-weight:800; color:var(--color-text); letter-spacing:-0.02em; }
+.stat-trend{ display:flex; align-items:center; gap:4px; font-size:12px; font-weight:600; margin-top:2px; }
+.stat-trend.up{ color:var(--color-success); }
+.stat-trend.down{ color:var(--color-error); }
+.stat-trend.flat{ color:var(--color-muted); }
+.stat-trend svg{ width:12px; height:12px; }
+
+.dash-grid{ display:grid; grid-template-columns:1.35fr 1fr; gap:var(--sp-4); align-items:start; }
+.stack{ display:flex; flex-direction:column; gap:var(--sp-4); }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3); padding:var(--sp-4) var(--sp-5); flex-wrap:wrap; border-bottom:1px solid var(--color-border); }
+.toolbar-left{ display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; }
+.toolbar-search{ position:relative; }
+.toolbar-search svg{ position:absolute; left:11px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--color-muted); }
+.toolbar-search input{ padding-left:34px; width:230px; height:36px; }
+.table-scroll{ overflow-x:auto; }
+table{ width:100%; border-collapse:collapse; min-width:720px; }
+thead th{
+  text-align:left; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
+  color:var(--color-muted); padding:11px var(--sp-5); border-bottom:1px solid var(--color-border);
+  background:var(--color-surface-alt); white-space:nowrap;
+}
+thead th:first-child{ border-top-left-radius:0; }
+tbody td{ padding:13px var(--sp-5); border-bottom:1px solid var(--color-border); font-size:13.5px; color:var(--color-text); vertical-align:middle; }
+tbody tr:last-child td{ border-bottom:none; }
+tbody tr{ transition:background var(--transition); }
+tbody tr:hover{ background:var(--color-surface-alt); }
+.cell-primary{ font-weight:600; color:var(--color-text); }
+.cell-muted{ color:var(--color-muted); }
+.cell-mono{ font-family:'Plus Jakarta Sans',monospace; font-weight:600; color:var(--color-secondary-500); }
+[data-theme="dark"] .cell-mono{ color:var(--color-accent); }
+.avatar-sm{ width:26px; height:26px; border-radius:6px; background:var(--color-secondary-100); color:var(--color-secondary-500); display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; flex-shrink:0; }
+.cell-with-icon{ display:flex; align-items:center; gap:10px; }
+
+.row-actions{ display:flex; justify-content:flex-end; position:relative; }
+.action-menu{
+  position:absolute; top:34px; right:0; background:var(--color-surface);
+  border:1px solid var(--color-border); border-radius:var(--radius-md); box-shadow:var(--shadow-lg);
+  min-width:160px; z-index:50; padding:6px; display:none;
+}
+.action-menu.open{ display:block; }
+.action-menu button{
+  display:flex; align-items:center; gap:9px; width:100%; text-align:left;
+  padding:8px 10px; border-radius:6px; border:none; background:none; cursor:pointer;
+  font-family:inherit; font-size:13px; color:var(--color-text); font-weight:500;
+}
+.action-menu button:hover{ background:var(--color-surface-alt); }
+.action-menu button svg{ width:15px; height:15px; color:var(--color-muted); flex-shrink:0; }
+.action-menu button.danger{ color:var(--color-error); }
+.action-menu button.danger svg{ color:var(--color-error); }
+.action-menu hr{ border:none; border-top:1px solid var(--color-border); margin:5px 0; }
+
+.pagination{ display:flex; align-items:center; justify-content:space-between; padding:var(--sp-4) var(--sp-5); flex-wrap:wrap; gap:var(--sp-3); }
+.pagination-btns{ display:flex; align-items:center; gap:4px; }
+.page-btn{ width:32px; height:32px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text-secondary); font-size:12.5px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.page-btn:hover{ background:var(--color-surface-alt); }
+.page-btn.active{ background:var(--color-accent); border-color:var(--color-accent); color:#fff; }
+.page-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+.page-btn svg{ width:14px; height:14px; }
+
+/* mobile card-table */
+.mobile-row-card{ display:none; }
+
+/* ============================================================
+   CHART (custom SVG bar/line)
+   ============================================================ */
+.chart-legend{ display:flex; gap:var(--sp-4); flex-wrap:wrap; }
+.legend-item{ display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:600; color:var(--color-text-secondary); }
+.legend-swatch{ width:10px; height:10px; border-radius:3px; }
+.chart-wrap{ position:relative; width:100%; }
+.chart-tooltip{
+  position:absolute; pointer-events:none; background:var(--color-secondary); color:#fff;
+  padding:8px 11px; border-radius:8px; font-size:12px; box-shadow:var(--shadow-md);
+  transform:translate(-50%,-110%); opacity:0; transition:opacity 100ms ease; white-space:nowrap; z-index:5;
+}
+.chart-tooltip.show{ opacity:1; }
+.chart-tooltip .tt-title{ font-weight:700; margin-bottom:3px; }
+.chart-tooltip .tt-row{ display:flex; align-items:center; gap:6px; }
+.chart-tooltip .tt-dot{ width:7px; height:7px; border-radius:2px; }
+.bar-rect{ transition:opacity 120ms ease; cursor:pointer; }
+.bar-rect:hover{ opacity:0.8; }
+
+/* mini progress bar (warehouse utilization) */
+.progress{ width:100%; height:7px; border-radius:99px; background:var(--color-surface-alt); overflow:hidden; }
+.progress-fill{ height:100%; border-radius:99px; background:var(--color-accent); }
+.progress-fill.warn{ background:var(--color-warning); }
+.progress-fill.danger{ background:var(--color-error); }
+
+/* ============================================================
+   LIST ITEMS (recent transactions / low stock / approvals)
+   ============================================================ */
+.list-item{ display:flex; align-items:center; gap:12px; padding:12px var(--sp-5); border-bottom:1px solid var(--color-border); }
+.list-item:last-child{ border-bottom:none; }
+.list-icon{ width:36px; height:36px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.list-icon svg{ width:16px; height:16px; }
+.list-icon.in{ background:var(--color-success-bg); color:var(--color-success); }
+.list-icon.out{ background:var(--color-error-bg); color:var(--color-error); }
+.list-body{ min-width:0; flex:1; }
+.list-title{ font-size:13.5px; font-weight:600; color:var(--color-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.list-sub{ font-size:12px; color:var(--color-muted); margin-top:1px; }
+.list-value{ font-size:13px; font-weight:700; flex-shrink:0; }
+.list-value.pos{ color:var(--color-success); }
+.list-value.neg{ color:var(--color-error); }
+
+/* ============================================================
+   MODAL / DRAWER / CONFIRM / TOAST
+   ============================================================ */
+.overlay{
+  position:fixed; inset:0; background:rgba(10,16,24,0.5);
+  display:none; align-items:center; justify-content:center; z-index:100; padding:var(--sp-4);
+  backdrop-filter:blur(1px);
+}
+.overlay.open{ display:flex; }
+.modal{
+  background:var(--color-surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg);
+  width:100%; max-width:520px; max-height:88vh; display:flex; flex-direction:column;
+  animation:modalIn 160ms ease;
+}
+.modal.modal-lg{ max-width:680px; }
+@keyframes modalIn{ from{ opacity:0; transform:translateY(10px) scale(0.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
+.modal-header{ display:flex; align-items:flex-start; justify-content:space-between; padding:var(--sp-5); border-bottom:1px solid var(--color-border); gap:var(--sp-3); }
+.modal-header p{ margin-top:3px; }
+.modal-body{ padding:var(--sp-5); overflow-y:auto; }
+.modal-footer{ display:flex; justify-content:flex-end; gap:var(--sp-2); padding:var(--sp-4) var(--sp-5); border-top:1px solid var(--color-border); flex-shrink:0; }
+.modal-close{ width:32px; height:32px; border-radius:var(--radius-md); border:none; background:transparent; color:var(--color-muted); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.modal-close:hover{ background:var(--color-surface-alt); color:var(--color-text); }
+.modal-close svg{ width:17px; height:17px; }
+
+.confirm-icon{ width:44px; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; margin-bottom:var(--sp-4); }
+.confirm-icon.danger{ background:var(--color-error-bg); color:var(--color-error); }
+.confirm-icon.warning{ background:var(--color-warning-bg); color:var(--color-warning); }
+.confirm-icon svg{ width:22px; height:22px; }
+
+.toast-stack{ position:fixed; top:20px; right:20px; z-index:200; display:flex; flex-direction:column; gap:10px; max-width:360px; width:calc(100% - 40px); }
+.toast{
+  background:var(--color-surface); border:1px solid var(--color-border); border-left:3px solid var(--color-accent);
+  border-radius:var(--radius-md); box-shadow:var(--shadow-lg); padding:12px 14px;
+  display:flex; align-items:flex-start; gap:10px; animation:toastIn 180ms ease;
+}
+@keyframes toastIn{ from{ opacity:0; transform:translateX(16px); } to{ opacity:1; transform:translateX(0); } }
+.toast.success{ border-left-color:var(--color-success); }
+.toast.error{ border-left-color:var(--color-error); }
+.toast.warning{ border-left-color:var(--color-warning); }
+.toast-icon{ width:20px; height:20px; flex-shrink:0; margin-top:1px; }
+.toast.success .toast-icon{ color:var(--color-success); }
+.toast.error .toast-icon{ color:var(--color-error); }
+.toast.warning .toast-icon{ color:var(--color-warning); }
+.toast.info .toast-icon{ color:var(--color-info); }
+.toast-body{ flex:1; min-width:0; }
+.toast-title{ font-size:13px; font-weight:700; }
+.toast-msg{ font-size:12.5px; color:var(--color-muted); margin-top:2px; }
+.toast-close{ background:none; border:none; color:var(--color-muted); cursor:pointer; padding:0; flex-shrink:0; }
+.toast-close svg{ width:15px; height:15px; }
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabs{ display:flex; gap:2px; border-bottom:1px solid var(--color-border); padding:0 var(--sp-5); overflow-x:auto; }
+.tab-btn{ padding:12px 4px; margin-right:22px; background:none; border:none; border-bottom:2px solid transparent; font-family:inherit; font-size:13.5px; font-weight:600; color:var(--color-muted); cursor:pointer; white-space:nowrap; }
+.tab-btn:hover{ color:var(--color-text); }
+.tab-btn.active{ color:var(--color-accent); border-bottom-color:var(--color-accent); }
+
+/* ============================================================
+   EMPTY / LOADING / ERROR STATES
+   ============================================================ */
+.state-block{ display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:56px var(--sp-5); }
+.state-icon{ width:52px; height:52px; border-radius:var(--radius-lg); background:var(--color-surface-alt); display:flex; align-items:center; justify-content:center; color:var(--color-muted); margin-bottom:var(--sp-4); }
+.state-icon svg{ width:24px; height:24px; }
+.state-icon.error{ background:var(--color-error-bg); color:var(--color-error); }
+.state-title{ font-size:14.5px; font-weight:700; color:var(--color-text); margin-bottom:4px; }
+.state-desc{ font-size:13px; color:var(--color-muted); max-width:320px; margin-bottom:var(--sp-4); }
+
+.skeleton{ background:linear-gradient(90deg, var(--color-surface-alt) 25%, var(--color-border) 37%, var(--color-surface-alt) 63%); background-size:400% 100%; animation:skeletonWave 1.4s ease infinite; border-radius:6px; }
+@keyframes skeletonWave{ 0%{ background-position:100% 50%; } 100%{ background-position:0 50%; } }
+.sk-row{ display:flex; align-items:center; gap:var(--sp-4); padding:13px var(--sp-5); border-bottom:1px solid var(--color-border); }
+.sk-row:last-child{ border-bottom:none; }
+.sk-block{ height:14px; border-radius:4px; }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.flex{ display:flex; }
+.items-center{ align-items:center; }
+.justify-between{ justify-content:space-between; }
+.gap-2{ gap:8px; } .gap-3{ gap:12px; } .gap-4{ gap:16px; }
+.mt-1{ margin-top:4px; } .mt-2{ margin-top:8px; } .mt-3{ margin-top:12px; } .mt-4{ margin-top:16px; }
+.mb-3{ margin-bottom:12px; } .mb-4{ margin-bottom:16px; }
+.w-full{ width:100%; }
+.hide-mobile{ display:initial; }
+.only-mobile{ display:none; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1180px){
+  .stat-grid{ grid-template-columns:repeat(2,1fr); }
+  .dash-grid{ grid-template-columns:1fr; }
+}
+@media (max-width:900px){
+  .sidebar{ transform:translateX(-100%); width:264px; box-shadow:var(--shadow-lg); }
+  .sidebar.mobile-open{ transform:translateX(0); }
+  .sidebar.collapsed{ width:264px; }
+  .sidebar.collapsed .sidebar-brand-text, .sidebar.collapsed .nav-item .nav-label, .sidebar.collapsed .nav-group-label{ opacity:1; width:auto; height:auto; display:block; }
+  .sidebar.collapsed .nav-sub{ display:block; }
+  .sidebar-footer{ display:none; }
+  .main-col{ margin-left:0 !important; }
+  .mobile-menu-btn{ display:flex; }
+  .topbar{ padding:0 var(--sp-4); }
+  .topbar-search{ display:none; }
+  .role-select{ display:none; }
+  .content{ padding:var(--sp-4); }
+  .field-row{ grid-template-columns:1fr; }
+  .scrim{ position:fixed; inset:0; background:rgba(10,16,24,0.5); z-index:35; display:none; }
+  .scrim.open{ display:block; }
+}
+@media (max-width:760px){
+  .stat-grid{ grid-template-columns:1fr 1fr; gap:var(--sp-3); }
+  .stat-value{ font-size:21px; }
+  .page-header{ flex-direction:column; align-items:stretch; }
+  .page-header-actions{ width:100%; }
+  .page-header-actions .btn{ flex:1; }
+  .table-toolbar{ flex-direction:column; align-items:stretch; }
+  .toolbar-left{ width:100%; }
+  .toolbar-search{ flex:1; }
+  .toolbar-search input{ width:100%; }
+}
+@media (max-width:640px){
+  .stat-grid{ grid-template-columns:1fr 1fr; }
+  table{ min-width:600px; }
+  .modal{ max-width:100%; }
+  .pagination{ flex-direction:column; align-items:flex-start; }
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="app-shell">
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 7L12 3L21 7L12 11L3 7Z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 12L12 16L21 12" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 17L12 21L21 17" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="sidebar-brand-text">Inventra</span>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="nav-group">
+        <button class="nav-item active" data-page="dashboard" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="3" width="8" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="10" width="8" height="11" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="nav-label">Dashboard</span>
+        </button>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">Inventory</div>
+        <button class="nav-item" data-page="items" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 7L12 3L4 7L12 11L20 7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 7V17L12 21V11" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M20 7V17L12 21" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <span class="nav-label">Items</span>
+        </button>
+        <button class="nav-item" data-page="stockin" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5L6 11M12 5L18 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="nav-label">Stock In</span>
+        </button>
+        <button class="nav-item" data-page="stockout" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M12 19L6 13M12 19L18 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="nav-label">Stock Out</span>
+        </button>
+        <button class="nav-item" data-page="opname" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 11L11 13L15 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="nav-label">Stock Opname</span>
+        </button>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">Operations</div>
+        <button class="nav-item" data-page="warehouse" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 21V9L12 3L21 9V21H15V14H9V21H3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <span class="nav-label">Warehouse</span>
+        </button>
+        <button class="nav-item" data-page="assets" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="12" rx="1.5" stroke="currentColor" stroke-width="1.8"/><path d="M9 20H15M12 16V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="nav-label">Assets</span>
+        </button>
+        <button class="nav-item" data-page="approvals" data-perm="manager">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3L20 6.5V11C20 16 16.5 19.7 12 21C7.5 19.7 4 16 4 11V6.5L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <span class="nav-label">Approvals</span>
+        </button>
+        <button class="nav-item" data-page="reports" data-perm="all">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20V13M22 20H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="nav-label">Reports</span>
+        </button>
+      </div>
+
+      <div class="nav-group" id="adminGroup">
+        <div class="nav-group-label">Administration</div>
+        <button class="nav-item" data-page="users" data-perm="admin">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3 20C3 16.5 5.7 14 9 14C12.3 14 15 16.5 15 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 8.2C16.6 8.6 17.4 9.6 17.4 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 14.3C19.4 14.9 21 17.1 21 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="nav-label">Users</span>
+        </button>
+        <button class="nav-item" data-page="roles" data-perm="admin">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L20 6.5V11C20 16 16.5 19.7 12 21C7.5 19.7 4 16 4 11V6.5L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8V13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="15.6" r="0.9" fill="currentColor"/></svg>
+          <span class="nav-label">Roles & Permissions</span>
+        </button>
+        <button class="nav-item" data-page="audit" data-perm="admin">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 3H15L20 8V21H6V3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15 3V8H20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 13H16M9 17H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="nav-label">Audit Log</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-collapse-btn" id="collapseBtn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Collapse sidebar</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main-col">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Buka navigasi">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="topbar-search">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="text" id="globalSearch" placeholder="Cari item, transaksi, aset...">
+          <span class="kbd">⌘K</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <select class="role-select" id="roleSelect" aria-label="Ganti peran (demo permission)">
+          <option value="admin">Peran: Admin</option>
+          <option value="manager">Peran: Manager</option>
+          <option value="staff">Peran: Staff</option>
+        </select>
+        <div class="divider-v"></div>
+        <button class="icon-btn" id="themeToggle" aria-label="Ganti tema">
+          <svg id="themeIconSun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5V5M12 19V21.5M4.5 12H2M22 12H19.5M5.6 5.6L7.4 7.4M18.4 5.6L16.6 7.4M5.6 18.4L7.4 16.6M18.4 18.4L16.6 16.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" style="display:none"><path d="M20 14.5C18.9 15 17.7 15.3 16.4 15.3C11.7 15.3 7.9 11.5 7.9 6.8C7.9 5.5 8.2 4.3 8.7 3.2C5.2 4.4 2.7 7.7 2.7 11.6C2.7 16.5 6.7 20.5 11.6 20.5C15.4 20.5 18.7 18.1 20 14.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="icon-btn" id="notifBtn" aria-label="Notifikasi" style="position:relative;">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 9C6 5.7 8.7 3 12 3C15.3 3 18 5.7 18 9V13.5L20 17H4L6 13.5V9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.5 17C9.5 18.4 10.6 19.5 12 19.5C13.4 19.5 14.5 18.4 14.5 17" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span style="position:absolute; top:6px; right:7px; width:7px; height:7px; border-radius:50%; background:var(--color-error); border:1.5px solid var(--color-surface);"></span>
+        </button>
+        <div class="divider-v"></div>
+        <button class="user-chip" id="userMenuBtn">
+          <div class="avatar">RA</div>
+          <div class="user-chip-text">
+            <div class="user-chip-name">Rangga Adiwijaya</div>
+            <div class="user-chip-role" id="userRoleLabel">Administrator</div>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <main class="content" id="content">
+
+      <!-- ================= DASHBOARD ================= -->
+      <section class="page active" data-page-content="dashboard">
+        <div class="breadcrumb"><a href="javascript:void(0)">Inventra</a><span class="sep">/</span><span class="current">Dashboard</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Dashboard</h1>
+            <p class="text-helper">Ringkasan operasional inventory per hari ini, Senin 30 Agustus 2026.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="showToast('info','Laporan diperbarui','Data dashboard telah disinkronkan.')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M21 12C21 16.97 16.97 21 12 21C7.03 21 3 16.97 3 12C3 7.03 7.03 3 12 3C15 3 17.5 4.5 19 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 3V6.5H15.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Refresh
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modalNewItem')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Item Baru
+            </button>
+          </div>
+        </div>
+
+        <div class="stat-grid" id="statGrid"><!-- injected --></div>
+
+        <div class="dash-grid">
+          <div class="stack">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="text-section-title">Stock Movement</div>
+                  <div class="text-helper mt-1">Stock In vs Stock Out — 7 hari terakhir</div>
+                </div>
+                <div class="chart-legend">
+                  <div class="legend-item"><span class="legend-swatch" style="background:var(--color-accent)"></span>Stock In</div>
+                  <div class="legend-item"><span class="legend-swatch" style="background:var(--color-secondary-500)"></span>Stock Out</div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrap" id="movementChart"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="text-section-title">Recent Transactions</div>
+                <button class="btn btn-ghost btn-sm" data-page="stockin">Lihat semua</button>
+              </div>
+              <div class="card-body no-pad" id="recentTxList"><!-- injected --></div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="card">
+              <div class="card-header">
+                <div class="text-section-title">Low Stock Items</div>
+                <span class="badge badge-warning"><span class="dot"></span><span id="lowStockCount">0</span> item</span>
+              </div>
+              <div class="card-body no-pad" id="lowStockList"><!-- injected --></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="text-section-title">Pending Approval</div>
+                <button class="btn btn-ghost btn-sm" data-page="approvals">Lihat semua</button>
+              </div>
+              <div class="card-body no-pad" id="pendingApprovalList"><!-- injected --></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ITEMS ================= -->
+      <section class="page" data-page-content="items">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><a href="javascript:void(0)">Inventory</a><span class="sep">/</span><span class="current">Items</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Items</h1>
+            <p class="text-helper">Kelola master data barang di seluruh warehouse.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary btn-sm">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3V15M12 15L7 10M12 15L17 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17V19C4 20.1 4.9 21 6 21H18C19.1 21 20 20.1 20 19V17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Export
+            </button>
+            <button class="btn btn-primary btn-sm" data-perm-action="create" onclick="openModal('modalNewItem')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Tambah Item
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="toolbar-left">
+              <div class="toolbar-search">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <input class="input" type="text" id="itemSearch" placeholder="Cari kode atau nama item...">
+              </div>
+              <div class="select-wrap">
+                <select class="select" id="itemCategoryFilter" style="width:170px;">
+                  <option value="">Semua Kategori</option>
+                </select>
+              </div>
+              <div class="select-wrap">
+                <select class="select" id="itemStatusFilter" style="width:150px;">
+                  <option value="">Semua Status</option>
+                  <option value="In Stock">In Stock</option>
+                  <option value="Low Stock">Low Stock</option>
+                  <option value="Out of Stock">Out of Stock</option>
+                </select>
+              </div>
+            </div>
+            <div class="text-helper" id="itemResultCount">0 item</div>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item Code</th>
+                  <th>Item Name</th>
+                  <th>Category</th>
+                  <th>Warehouse</th>
+                  <th>Quantity</th>
+                  <th>Status</th>
+                  <th>Updated</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="itemsTableBody"><!-- injected --></tbody>
+            </table>
+          </div>
+          <div id="itemsEmptyState"></div>
+          <div class="pagination" id="itemsPagination"></div>
+        </div>
+      </section>
+
+      <!-- ================= STOCK IN ================= -->
+      <section class="page" data-page-content="stockin">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><a href="javascript:void(0)">Inventory</a><span class="sep">/</span><span class="current">Stock In</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Stock In</h1>
+            <p class="text-helper">Riwayat penerimaan barang masuk ke warehouse.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary btn-sm" data-perm-action="create" onclick="openModal('modalStockIn')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Stock In Baru
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Reference</th><th>Item</th><th>Warehouse</th><th>Qty</th><th>Supplier</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="stockInTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STOCK OUT ================= -->
+      <section class="page" data-page-content="stockout">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><a href="javascript:void(0)">Inventory</a><span class="sep">/</span><span class="current">Stock Out</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Stock Out</h1>
+            <p class="text-helper">Riwayat pengeluaran barang dari warehouse.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary btn-sm" data-perm-action="create" onclick="openModal('modalStockOut')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Stock Out Baru
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Reference</th><th>Item</th><th>Warehouse</th><th>Qty</th><th>Requested By</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="stockOutTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STOCK OPNAME ================= -->
+      <section class="page" data-page-content="opname">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><a href="javascript:void(0)">Inventory</a><span class="sep">/</span><span class="current">Stock Opname</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Stock Opname</h1>
+            <p class="text-helper">Sesi audit fisik untuk mencocokkan stok sistem dengan stok riil.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary btn-sm" data-perm-action="create" onclick="showToast('info','Sesi opname dibuat','Sesi stock opname baru telah dijadwalkan.')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Mulai Opname
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Session</th><th>Warehouse</th><th>PIC</th><th>Items Checked</th><th>Discrepancy</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="opnameTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= WAREHOUSE ================= -->
+      <section class="page" data-page-content="warehouse">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><span class="current">Warehouse</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Warehouse</h1>
+            <p class="text-helper">Kapasitas dan utilisasi setiap lokasi penyimpanan.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary btn-sm" data-perm-action="create">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Tambah Warehouse
+            </button>
+          </div>
+        </div>
+        <div class="stat-grid" id="warehouseGrid" style="grid-template-columns:repeat(3,1fr);"></div>
+      </section>
+
+      <!-- ================= ASSETS ================= -->
+      <section class="page" data-page-content="assets">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><span class="current">Assets</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Assets</h1>
+            <p class="text-helper">Aset tetap perusahaan — peralatan operasional dan kantor.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary btn-sm" data-perm-action="create">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Daftarkan Aset
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Asset ID</th><th>Name</th><th>Category</th><th>Assigned To</th><th>Location</th><th>Condition</th><th>Status</th></tr></thead>
+              <tbody id="assetsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= APPROVALS ================= -->
+      <section class="page" data-page-content="approvals">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><span class="current">Approvals</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Approvals</h1>
+            <p class="text-helper">Permintaan yang menunggu persetujuan Manager/Admin.</p>
+          </div>
+        </div>
+        <div class="tabs">
+          <button class="tab-btn active" data-approval-tab="pending">Pending <span id="tabPendingCount"></span></button>
+          <button class="tab-btn" data-approval-tab="approved">Approved</button>
+          <button class="tab-btn" data-approval-tab="rejected">Rejected</button>
+        </div>
+        <div class="card" style="border-top-left-radius:0;border-top-right-radius:0;">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Request</th><th>Type</th><th>Requested By</th><th>Amount / Qty</th><th>Date</th><th>Status</th><th></th></tr></thead>
+              <tbody id="approvalsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= REPORTS ================= -->
+      <section class="page" data-page-content="reports">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><span class="current">Reports</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Reports</h1>
+            <p class="text-helper">Ringkasan performa inventory bulan berjalan.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="showToast('success','Laporan diekspor','report-inventory-agustus.xlsx siap diunduh.')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3V15M12 15L7 10M12 15L17 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17V19C4 20.1 4.9 21 6 21H18C19.1 21 20 20.1 20 19V17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Export Report
+            </button>
+          </div>
+        </div>
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-header">
+              <div class="text-section-title">Monthly Transactions</div>
+              <div class="chart-legend">
+                <div class="legend-item"><span class="legend-swatch" style="background:var(--color-accent)"></span>Stock In</div>
+                <div class="legend-item"><span class="legend-swatch" style="background:var(--color-secondary-500)"></span>Stock Out</div>
+              </div>
+            </div>
+            <div class="card-body"><div class="chart-wrap" id="monthlyChart"></div></div>
+          </div>
+          <div class="stack">
+            <div class="card card-pad">
+              <div class="text-card-title mb-3">Category Breakdown</div>
+              <div id="categoryBars" class="stack" style="gap:12px;"></div>
+            </div>
+            <div class="card card-pad">
+              <div class="text-card-title mb-3">Ringkasan Cepat</div>
+              <div class="stack" style="gap:10px;">
+                <div class="flex justify-between"><span class="text-body">Total Nilai Inventory</span><span class="cell-primary num">Rp 4.281.500.000</span></div>
+                <div class="flex justify-between"><span class="text-body">Rata-rata Turnover</span><span class="cell-primary num">3,2x / bulan</span></div>
+                <div class="flex justify-between"><span class="text-body">Akurasi Stock Opname</span><span class="cell-primary num">98,4%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= USERS ================= -->
+      <section class="page" data-page-content="users">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><a href="javascript:void(0)">Administration</a><span class="sep">/</span><span class="current">Users</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Users</h1>
+            <p class="text-helper">Kelola pengguna yang memiliki akses ke Inventra.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary btn-sm">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Undang User
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Warehouse Access</th><th>Status</th><th>Last Active</th></tr></thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ROLES ================= -->
+      <section class="page" data-page-content="roles">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><a href="javascript:void(0)">Administration</a><span class="sep">/</span><span class="current">Roles & Permissions</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Roles & Permissions</h1>
+            <p class="text-helper">Definisi hak akses untuk setiap peran. Perubahan di sini hanya memengaruhi tampilan — enforcement tetap dilakukan di backend.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Permission</th><th style="text-align:center">Admin</th><th style="text-align:center">Manager</th><th style="text-align:center">Staff</th></tr></thead>
+              <tbody id="rolesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= AUDIT LOG ================= -->
+      <section class="page" data-page-content="audit">
+        <div class="breadcrumb"><a href="javascript:void(0)" data-page="dashboard">Inventra</a><span class="sep">/</span><a href="javascript:void(0)">Administration</a><span class="sep">/</span><span class="current">Audit Log</span></div>
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1 class="text-page-title">Audit Log</h1>
+            <p class="text-helper">Jejak seluruh aktivitas penting dalam sistem.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Entity</th><th>IP Address</th></tr></thead>
+              <tbody id="auditTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+<div class="overlay" id="modalNewItem">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalNewItemTitle">
+    <div class="modal-header">
+      <div>
+        <h2 class="text-section-title" id="modalNewItemTitle">Tambah Item Baru</h2>
+        <p class="text-helper">Lengkapi detail barang untuk ditambahkan ke master inventory.</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalNewItem')"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Item Code <span class="req">*</span></label>
+          <input class="input" id="fItemCode" placeholder="INV-014" value="INV-014">
+        </div>
+        <div class="field">
+          <label class="field-label">Item Name <span class="req">*</span></label>
+          <input class="input" id="fItemName" placeholder="Contoh: Monitor LG 24 inch">
+          <span class="field-error"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8V13M12 16H12.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Nama item wajib diisi.</span>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Category</label>
+          <div class="select-wrap"><select class="select" id="fCategory">
+            <option>Electronics</option><option>Office Supplies</option><option>Furniture</option><option>IT Equipment</option><option>Raw Material</option>
+          </select></div>
+        </div>
+        <div class="field">
+          <label class="field-label">Warehouse</label>
+          <div class="select-wrap"><select class="select" id="fWarehouse">
+            <option>Warehouse A — Cikarang</option><option>Warehouse B — Bekasi</option><option>Warehouse C — Karawang</option>
+          </select></div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Initial Quantity</label>
+          <input class="input" type="number" id="fQty" placeholder="0" value="50">
+        </div>
+        <div class="field">
+          <label class="field-label">Reorder Point</label>
+          <input class="input" type="number" id="fReorder" placeholder="0" value="10">
+          <span class="field-help">Sistem akan menandai Low Stock di bawah nilai ini.</span>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Catatan</label>
+        <textarea class="input" placeholder="Catatan tambahan (opsional)"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalNewItem')">Batal</button>
+      <button class="btn btn-primary" onclick="submitNewItem()">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Simpan Item
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modalStockIn">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div><h2 class="text-section-title">Stock In Baru</h2><p class="text-helper">Catat penerimaan barang dari supplier.</p></div>
+      <button class="modal-close" onclick="closeModal('modalStockIn')"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label">Item <span class="req">*</span></label>
+        <div class="select-wrap"><select class="select"><option>INV-001 — Laptop Dell Latitude 5440</option><option>INV-004 — Kertas HVS A4 80gsm</option><option>INV-009 — Kursi Kantor Ergonomis</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Quantity <span class="req">*</span></label><input class="input" type="number" placeholder="0"></div>
+        <div class="field"><label class="field-label">Warehouse</label><div class="select-wrap"><select class="select"><option>Warehouse A — Cikarang</option><option>Warehouse B — Bekasi</option></select></div></div>
+      </div>
+      <div class="field"><label class="field-label">Supplier</label><input class="input" placeholder="Nama supplier"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalStockIn')">Batal</button>
+      <button class="btn btn-primary" onclick="closeModal('modalStockIn'); showToast('success','Stock In tercatat','Barang berhasil ditambahkan ke inventory.')">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modalStockOut">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div><h2 class="text-section-title">Stock Out Baru</h2><p class="text-helper">Catat pengeluaran barang dari warehouse.</p></div>
+      <button class="modal-close" onclick="closeModal('modalStockOut')"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label">Item <span class="req">*</span></label>
+        <div class="select-wrap"><select class="select"><option>INV-002 — Mouse Wireless Logitech</option><option>INV-006 — Toner Printer HP 26A</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label class="field-label">Quantity <span class="req">*</span></label><input class="input" type="number" placeholder="0"></div>
+        <div class="field"><label class="field-label">Requested By</label><input class="input" placeholder="Nama departemen/pemohon"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalStockOut')">Batal</button>
+      <button class="btn btn-primary" onclick="closeModal('modalStockOut'); showToast('success','Stock Out diajukan','Permintaan menunggu persetujuan Manager.')">Ajukan</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modalConfirm">
+  <div class="modal" style="max-width:420px;" role="alertdialog" aria-modal="true">
+    <div class="modal-body" style="padding-top:var(--sp-5);">
+      <div class="confirm-icon danger" id="confirmIcon">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 9V13M12 16.5H12.01M10.3 3.9L2.5 17.5C2 18.4 2.7 19.5 3.7 19.5H20.3C21.3 19.5 22 18.4 21.5 17.5L13.7 3.9C13.2 3 11.8 3 11.3 3.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="text-section-title" id="confirmTitle">Hapus item ini?</div>
+      <p class="text-helper mt-2" id="confirmDesc">Tindakan ini tidak dapat dibatalkan. Item akan dihapus secara permanen dari inventory.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalConfirm')">Batal</button>
+      <button class="btn btn-danger" id="confirmActionBtn">Hapus</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   MOCK DATA
+   ============================================================ */
+const warehouses = ["Warehouse A — Cikarang","Warehouse B — Bekasi","Warehouse C — Karawang"];
+const categories = ["Electronics","Office Supplies","Furniture","IT Equipment","Raw Material"];
+
+const itemsData = [
+  {code:"INV-001", name:"Laptop Dell Latitude 5440", category:"IT Equipment", warehouse:"Warehouse A — Cikarang", qty:120, status:"In Stock", updated:"28 Agu 2026"},
+  {code:"INV-002", name:"Mouse Wireless Logitech M170", category:"IT Equipment", warehouse:"Warehouse A — Cikarang", qty:340, status:"In Stock", updated:"27 Agu 2026"},
+  {code:"INV-003", name:"Monitor LG 24 inch IPS", category:"Electronics", warehouse:"Warehouse B — Bekasi", qty:8, status:"Low Stock", updated:"29 Agu 2026"},
+  {code:"INV-004", name:"Kertas HVS A4 80gsm", category:"Office Supplies", warehouse:"Warehouse C — Karawang", qty:0, status:"Out of Stock", updated:"25 Agu 2026"},
+  {code:"INV-005", name:"Kursi Kantor Ergonomis", category:"Furniture", warehouse:"Warehouse B — Bekasi", qty:56, status:"In Stock", updated:"26 Agu 2026"},
+  {code:"INV-006", name:"Toner Printer HP 26A", category:"Office Supplies", warehouse:"Warehouse A — Cikarang", qty:5, status:"Low Stock", updated:"29 Agu 2026"},
+  {code:"INV-007", name:"Rak Besi Industrial 4 Tingkat", category:"Furniture", warehouse:"Warehouse C — Karawang", qty:22, status:"In Stock", updated:"24 Agu 2026"},
+  {code:"INV-008", name:"Kabel LAN Cat6 305m", category:"IT Equipment", warehouse:"Warehouse A — Cikarang", qty:14, status:"In Stock", updated:"22 Agu 2026"},
+  {code:"INV-009", name:"Baterai AA Alkaline (pak)", category:"Office Supplies", warehouse:"Warehouse B — Bekasi", qty:2, status:"Low Stock", updated:"29 Agu 2026"},
+  {code:"INV-010", name:"Proyektor Epson EB-X06", category:"Electronics", warehouse:"Warehouse A — Cikarang", qty:9, status:"In Stock", updated:"20 Agu 2026"},
+  {code:"INV-011", name:"Plat Baja Lembaran 1.2mm", category:"Raw Material", warehouse:"Warehouse C — Karawang", qty:410, status:"In Stock", updated:"18 Agu 2026"},
+  {code:"INV-012", name:"Meja Kerja Adjustable", category:"Furniture", warehouse:"Warehouse B — Bekasi", qty:0, status:"Out of Stock", updated:"17 Agu 2026"},
+  {code:"INV-013", name:"UPS APC 1000VA", category:"IT Equipment", warehouse:"Warehouse A — Cikarang", qty:17, status:"In Stock", updated:"19 Agu 2026"},
+];
+
+const stockInData = [
+  {ref:"SI-2026-0142", item:"Laptop Dell Latitude 5440", wh:"Warehouse A", qty:40, supplier:"PT Mitra Elektronik", status:"Completed", date:"29 Agu 2026"},
+  {ref:"SI-2026-0141", item:"Kabel LAN Cat6 305m", wh:"Warehouse A", qty:10, supplier:"CV Sumber Jaya Kabel", status:"Completed", date:"28 Agu 2026"},
+  {ref:"SI-2026-0140", item:"Plat Baja Lembaran 1.2mm", wh:"Warehouse C", qty:200, supplier:"PT Baja Nusantara", status:"Processing", date:"28 Agu 2026"},
+  {ref:"SI-2026-0139", item:"Monitor LG 24 inch IPS", wh:"Warehouse B", qty:25, supplier:"PT Mitra Elektronik", status:"Completed", date:"27 Agu 2026"},
+  {ref:"SI-2026-0138", item:"Kursi Kantor Ergonomis", wh:"Warehouse B", qty:15, supplier:"CV Furnindo", status:"Completed", date:"26 Agu 2026"},
+];
+const stockOutData = [
+  {ref:"SO-2026-0231", item:"Mouse Wireless Logitech M170", wh:"Warehouse A", qty:20, req:"Divisi IT", status:"Approved", date:"29 Agu 2026"},
+  {ref:"SO-2026-0230", item:"Kertas HVS A4 80gsm", wh:"Warehouse C", qty:60, req:"Divisi Finance", status:"Pending", date:"29 Agu 2026"},
+  {ref:"SO-2026-0229", item:"Toner Printer HP 26A", wh:"Warehouse A", qty:3, req:"Divisi Umum", status:"Approved", date:"28 Agu 2026"},
+  {ref:"SO-2026-0228", item:"Baterai AA Alkaline (pak)", wh:"Warehouse B", qty:8, req:"Divisi Marketing", status:"Rejected", date:"27 Agu 2026"},
+  {ref:"SO-2026-0227", item:"UPS APC 1000VA", wh:"Warehouse A", qty:2, req:"Divisi IT", status:"Approved", date:"26 Agu 2026"},
+];
+const opnameData = [
+  {session:"OPN-2026-08-C", wh:"Warehouse C — Karawang", pic:"Dewi Lestari", checked:"312 / 320", disc:8, status:"In Progress", date:"29 Agu 2026"},
+  {session:"OPN-2026-08-B", wh:"Warehouse B — Bekasi", pic:"Bagus Prakoso", checked:"188 / 188", disc:2, status:"Completed", date:"22 Agu 2026"},
+  {session:"OPN-2026-08-A", wh:"Warehouse A — Cikarang", pic:"Siti Rahayu", checked:"256 / 256", disc:0, status:"Completed", date:"15 Agu 2026"},
+];
+const assetsData = [
+  {id:"AST-0091", name:"Server Dell PowerEdge R740", category:"IT Infrastructure", assignee:"Divisi IT", loc:"Warehouse A", cond:"Good", status:"Active"},
+  {id:"AST-0088", name:"Forklift Toyota 8FD25", category:"Heavy Equipment", assignee:"Divisi Logistik", loc:"Warehouse C", cond:"Fair", status:"Active"},
+  {id:"AST-0076", name:"AC Central Daikin 5PK", category:"Facility", assignee:"Divisi Umum", loc:"Warehouse B", cond:"Good", status:"Active"},
+  {id:"AST-0065", name:"CCTV Hikvision (unit)", category:"Security", assignee:"Divisi Umum", loc:"Warehouse A", cond:"Needs Repair", status:"Maintenance"},
+  {id:"AST-0052", name:"Genset Cummins 100kVA", category:"Facility", assignee:"Divisi Umum", loc:"Warehouse C", cond:"Good", status:"Active"},
+];
+const approvalsData = [
+  {req:"Stock Out — Kertas HVS A4 80gsm", type:"Stock Out", by:"Divisi Finance", amount:"60 unit", date:"29 Agu 2026", status:"Pending"},
+  {req:"Write-off — Meja Kerja Adjustable", type:"Write-off", by:"Divisi Umum", amount:"3 unit", date:"28 Agu 2026", status:"Pending"},
+  {req:"Purchase Request — UPS APC 1000VA", type:"Purchase", by:"Divisi IT", amount:"Rp 18.500.000", date:"27 Agu 2026", status:"Pending"},
+  {req:"Stock Out — Mouse Wireless Logitech", type:"Stock Out", by:"Divisi IT", amount:"20 unit", date:"29 Agu 2026", status:"Approved"},
+  {req:"Asset Transfer — Forklift Toyota 8FD25", type:"Transfer", by:"Divisi Logistik", amount:"1 unit", date:"25 Agu 2026", status:"Approved"},
+  {req:"Stock Out — Baterai AA Alkaline", type:"Stock Out", by:"Divisi Marketing", amount:"8 unit", date:"27 Agu 2026", status:"Rejected"},
+];
+const usersData = [
+  {name:"Rangga Adiwijaya", email:"rangga.a@inventra.co.id", role:"Admin", access:"All Warehouses", status:"Active", last:"Baru saja"},
+  {name:"Siti Rahayu", email:"siti.r@inventra.co.id", role:"Manager", access:"Warehouse A, B", status:"Active", last:"2 jam lalu"},
+  {name:"Bagus Prakoso", email:"bagus.p@inventra.co.id", role:"Manager", access:"Warehouse B", status:"Active", last:"1 hari lalu"},
+  {name:"Dewi Lestari", email:"dewi.l@inventra.co.id", role:"Staff", access:"Warehouse C", status:"Active", last:"3 jam lalu"},
+  {name:"Yusuf Hidayat", email:"yusuf.h@inventra.co.id", role:"Staff", access:"Warehouse A", status:"Suspended", last:"12 hari lalu"},
+];
+const rolesMatrix = [
+  {perm:"View Dashboard & Reports", admin:true, manager:true, staff:true},
+  {perm:"Create / Edit Items", admin:true, manager:true, staff:false},
+  {perm:"Delete Items", admin:true, manager:false, staff:false},
+  {perm:"Create Stock In / Stock Out", admin:true, manager:true, staff:true},
+  {perm:"Approve / Reject Requests", admin:true, manager:true, staff:false},
+  {perm:"Manage Users & Roles", admin:true, manager:false, staff:false},
+  {perm:"View Audit Log", admin:true, manager:false, staff:false},
+];
+const auditData = [
+  {ts:"29 Agu 2026, 14:22", user:"Rangga Adiwijaya", action:"Updated item", entity:"INV-003 Monitor LG 24 inch", ip:"10.20.4.11"},
+  {ts:"29 Agu 2026, 13:05", user:"Siti Rahayu", action:"Approved request", entity:"SO-2026-0229", ip:"10.20.4.44"},
+  {ts:"29 Agu 2026, 11:47", user:"Dewi Lestari", action:"Started opname session", entity:"OPN-2026-08-C", ip:"10.20.6.19"},
+  {ts:"28 Agu 2026, 17:30", user:"Bagus Prakoso", action:"Rejected request", entity:"SO-2026-0228", ip:"10.20.4.50"},
+  {ts:"28 Agu 2026, 09:12", user:"Rangga Adiwijaya", action:"Created user", entity:"yusuf.h@inventra.co.id", ip:"10.20.4.11"},
+];
+const warehouseStats = [
+  {name:"Warehouse A — Cikarang", used:78, capacity:"7.800 / 10.000 m²", items:642},
+  {name:"Warehouse B — Bekasi", used:54, capacity:"3.240 / 6.000 m²", items:388},
+  {name:"Warehouse C — Karawang", used:92, capacity:"6.440 / 7.000 m²", items:510},
+];
+const categoryBreakdown = [
+  {name:"IT Equipment", pct:34}, {name:"Office Supplies", pct:24}, {name:"Furniture", pct:18}, {name:"Raw Material", pct:15}, {name:"Electronics", pct:9},
+];
+const movement7d = [
+  {d:"Sen", inQ:62, outQ:40}, {d:"Sel",inQ:48,outQ:52}, {d:"Rab",inQ:80,outQ:35}, {d:"Kam",inQ:55,outQ:60}, {d:"Jum",inQ:90,outQ:44}, {d:"Sab",inQ:30,outQ:18}, {d:"Min",inQ:22,outQ:12},
+];
+const monthly12 = [
+  {d:"Sep",inQ:410,outQ:360},{d:"Okt",inQ:460,outQ:395},{d:"Nov",inQ:380,outQ:410},{d:"Des",inQ:520,outQ:470},{d:"Jan",inQ:440,outQ:390},{d:"Feb",inQ:395,outQ:360},
+  {d:"Mar",inQ:470,outQ:420},{d:"Apr",inQ:505,outQ:455},{d:"Mei",inQ:430,outQ:400},{d:"Jun",inQ:460,outQ:430},{d:"Jul",inQ:500,outQ:445},{d:"Agu",inQ:475,outQ:410},
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function initials(name){ return name.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function statusBadge(status){
+  const map = {
+    "In Stock":"success","Low Stock":"warning","Out of Stock":"error",
+    "Completed":"success","Processing":"info","In Progress":"info",
+    "Approved":"success","Pending":"warning","Rejected":"error",
+    "Active":"success","Suspended":"error","Maintenance":"warning",
+    "Good":"success","Fair":"warning","Needs Repair":"error"
+  };
+  const kind = map[status] || "neutral";
+  return `<span class="badge badge-${kind}"><span class="dot"></span>${status}</span>`;
+}
+
+/* ============================================================
+   SIDEBAR NAV / ROUTING
+   ============================================================ */
+const navItems = document.querySelectorAll('.nav-item[data-page]');
+const pages = document.querySelectorAll('.page[data-page-content]');
+const contentEl = document.getElementById('content');
+
+function goToPage(pageId){
+  navItems.forEach(n => n.classList.toggle('active', n.dataset.page === pageId));
+  pages.forEach(p => p.classList.toggle('active', p.dataset.pageContent === pageId));
+  contentEl.scrollTop = 0;
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant':'auto'});
+  closeMobileSidebar();
+}
+document.querySelectorAll('[data-page]').forEach(node => {
+  node.addEventListener('click', () => goToPage(node.dataset.page));
+});
+
+/* mobile sidebar */
+const sidebar = document.getElementById('sidebar');
+const scrim = document.getElementById('scrim');
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  sidebar.classList.add('mobile-open'); scrim.classList.add('open');
+});
+function closeMobileSidebar(){ sidebar.classList.remove('mobile-open'); scrim.classList.remove('open'); }
+scrim.addEventListener('click', closeMobileSidebar);
+
+/* collapse (desktop) */
+document.getElementById('collapseBtn').addEventListener('click', () => {
+  if(window.innerWidth <= 900){ closeMobileSidebar(); return; }
+  sidebar.classList.toggle('collapsed');
+});
+
+/* ============================================================
+   THEME
+   ============================================================ */
+const themeToggle = document.getElementById('themeToggle');
+const sunIcon = document.getElementById('themeIconSun');
+const moonIcon = document.getElementById('themeIconMoon');
+themeToggle.addEventListener('click', () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  sunIcon.style.display = isDark ? 'block' : 'none';
+  moonIcon.style.display = isDark ? 'none' : 'block';
+  renderCharts();
+});
+
+/* ============================================================
+   ROLE / PERMISSION DEMO
+   ============================================================ */
+const roleSelect = document.getElementById('roleSelect');
+const userRoleLabel = document.getElementById('userRoleLabel');
+const roleLabels = {admin:"Administrator", manager:"Manager", staff:"Staff Operasional"};
+function applyRole(role){
+  userRoleLabel.textContent = roleLabels[role];
+  document.querySelectorAll('[data-perm]').forEach(item => {
+    const need = item.dataset.perm;
+    let visible = true;
+    if(need === 'manager') visible = (role === 'admin' || role === 'manager');
+    if(need === 'admin') visible = (role === 'admin');
+    item.style.display = visible ? '' : 'none';
+  });
+  document.querySelectorAll('[data-perm-action="create"]').forEach(btn => {
+    btn.style.display = (role === 'staff' && btn.closest('[data-page-content="users"],[data-page-content="roles"]')) ? 'none' : (role === 'staff' ? 'none' : '');
+  });
+  // staff can still create stock in/out per role matrix; refine:
+  document.querySelectorAll('[data-perm-action="create"]').forEach(btn => { btn.style.display = ''; });
+  if(role === 'staff'){
+    document.querySelectorAll('[data-page-content="items"] [data-perm-action="create"], [data-page-content="warehouse"] [data-perm-action="create"], [data-page-content="assets"] [data-perm-action="create"]').forEach(btn => btn.style.display = 'none');
+  }
+  const activePage = document.querySelector('.page.active').dataset.pageContent;
+  if((activePage === 'approvals' && role === 'staff') || (['users','roles','audit'].includes(activePage) && role !== 'admin')){
+    goToPage('dashboard');
+  }
+}
+roleSelect.addEventListener('change', e => applyRole(e.target.value));
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+const toastStack = document.getElementById('toastStack');
+const toastIcons = {
+  success:'<path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  error:'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M15 9L9 15M9 9L15 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  warning:'<path d="M12 9V13M12 16.5H12.01M10.3 3.9L2.5 17.5C2 18.4 2.7 19.5 3.7 19.5H20.3C21.3 19.5 22 18.4 21.5 17.5L13.7 3.9C13.2 3 11.8 3 11.3 3.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  info:'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11V16M12 8H12.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+};
+function showToast(type, title, msg, duration=4200){
+  const t = el(`<div class="toast ${type}">
+    <svg class="toast-icon" viewBox="0 0 24 24" fill="none">${toastIcons[type]||toastIcons.info}</svg>
+    <div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>
+    <button class="toast-close" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>`);
+  t.querySelector('.toast-close').addEventListener('click', () => t.remove());
+  toastStack.appendChild(t);
+  setTimeout(() => { t.style.transition='opacity 200ms ease'; t.style.opacity='0'; setTimeout(()=>t.remove(),200); }, duration);
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+document.querySelectorAll('.overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if(e.target === ov) closeModal(ov.id); });
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ document.querySelectorAll('.overlay.open').forEach(ov => closeModal(ov.id)); }
+});
+
+function submitNewItem(){
+  const nameField = document.getElementById('fItemName');
+  const errWrap = nameField.closest('.field');
+  if(!nameField.value.trim()){
+    errWrap.classList.add('error'); nameField.classList.add('has-error'); nameField.focus();
+    return;
+  }
+  errWrap.classList.remove('error'); nameField.classList.remove('has-error');
+  closeModal('modalNewItem');
+  showToast('success','Item berhasil ditambahkan', `${nameField.value} telah masuk ke master inventory.`);
+  nameField.value='';
+}
+
+function confirmAction(title, desc, onConfirm, kind='danger', actionLabel='Hapus'){
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmDesc').textContent = desc;
+  const btn = document.getElementById('confirmActionBtn');
+  btn.textContent = actionLabel;
+  btn.className = kind === 'danger' ? 'btn btn-danger' : 'btn btn-primary';
+  const iconEl = document.getElementById('confirmIcon');
+  iconEl.className = 'confirm-icon ' + (kind === 'danger' ? 'danger' : 'warning');
+  const newBtn = btn.cloneNode(true);
+  btn.parentNode.replaceChild(newBtn, btn);
+  newBtn.addEventListener('click', () => { closeModal('modalConfirm'); onConfirm(); });
+  openModal('modalConfirm');
+}
+
+/* ============================================================
+   ACTION MENU (row dropdown)
+   ============================================================ */
+document.addEventListener('click', e => {
+  const trigger = e.target.closest('.action-trigger');
+  document.querySelectorAll('.action-menu.open').forEach(m => { if(!trigger || m !== trigger.nextElementSibling) m.classList.remove('open'); });
+  if(trigger){ trigger.nextElementSibling.classList.toggle('open'); e.stopPropagation(); }
+});
+
+/* ============================================================
+   DASHBOARD RENDER
+   ============================================================ */
+function renderStatGrid(){
+  const totalItems = itemsData.length + 187; // realistic larger catalog
+  const totalStock = itemsData.reduce((s,i)=>s+i.qty,0) + 8420;
+  const lowStock = itemsData.filter(i=>i.status==='Low Stock' || i.status==='Out of Stock').length + 6;
+  const pending = approvalsData.filter(a=>a.status==='Pending').length + 3;
+  const stats = [
+    {label:'Total Items', value: totalItems.toLocaleString('id-ID'), trend:'+4.2% bulan ini', dir:'up', icon:'navy', svg:'<path d="M20 7L12 3L4 7L12 11L20 7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 7V17L12 21V11" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M20 7V17L12 21" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>'},
+    {label:'Total Stock', value: totalStock.toLocaleString('id-ID')+' unit', trend:'+1.156 unit minggu ini', dir:'up', icon:'blue', svg:'<rect x="3" y="7" width="18" height="13" rx="1.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 7V5C8 3.9 8.9 3 10 3H14C15.1 3 16 3.9 16 5V7" stroke="currentColor" stroke-width="1.8"/>'},
+    {label:'Low Stock', value: lowStock, trend:'Perlu restock segera', dir:'down', icon:'amber', svg:'<path d="M12 9V13M12 16.5H12.01M10.3 3.9L2.5 17.5C2 18.4 2.7 19.5 3.7 19.5H20.3C21.3 19.5 22 18.4 21.5 17.5L13.7 3.9C13.2 3 11.8 3 11.3 3.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'},
+    {label:'Pending Approval', value: pending, trend:'Menunggu tindakan', dir:'flat', icon:'navy', svg:'<path d="M9 12L11 14L15.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3L20 6.5V11C20 16 16.5 19.7 12 21C7.5 19.7 4 16 4 11V6.5L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>'},
+  ];
+  const trendArrow = {up:'<path d="M6 14L12 8L18 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>', down:'<path d="M6 10L12 16L18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>', flat:'<path d="M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'};
+  document.getElementById('statGrid').innerHTML = stats.map(s => `
+    <div class="stat-card">
+      <div class="stat-top">
+        <div class="stat-icon ${s.icon}"><svg viewBox="0 0 24 24" fill="none">${s.svg}</svg></div>
+      </div>
+      <div class="stat-value num">${s.value}</div>
+      <div class="text-caption mt-1">${s.label}</div>
+      <div class="stat-trend ${s.dir}"><svg viewBox="0 0 24 24" fill="none">${trendArrow[s.dir]}</svg>${s.trend}</div>
+    </div>`).join('');
+}
+
+function renderRecentTx(){
+  const combined = [
+    {type:'in', title:'Laptop Dell Latitude 5440', sub:'Warehouse A · SI-2026-0142', val:'+40'},
+    {type:'out', title:'Mouse Wireless Logitech M170', sub:'Warehouse A · SO-2026-0231', val:'-20'},
+    {type:'in', title:'Plat Baja Lembaran 1.2mm', sub:'Warehouse C · SI-2026-0140', val:'+200'},
+    {type:'out', title:'Kertas HVS A4 80gsm', sub:'Warehouse C · SO-2026-0230', val:'-60'},
+    {type:'in', title:'Kursi Kantor Ergonomis', sub:'Warehouse B · SI-2026-0138', val:'+15'},
+  ];
+  document.getElementById('recentTxList').innerHTML = combined.map(t => `
+    <div class="list-item">
+      <div class="list-icon ${t.type}">
+        <svg viewBox="0 0 24 24" fill="none">${t.type==='in' ? '<path d="M12 5V19M5 12L12 19L19 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' : '<path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'}</svg>
+      </div>
+      <div class="list-body">
+        <div class="list-title">${t.title}</div>
+        <div class="list-sub">${t.sub}</div>
+      </div>
+      <div class="list-value ${t.type==='in'?'pos':'neg'} num">${t.val}</div>
+    </div>`).join('');
+}
+
+function renderLowStock(){
+  const low = itemsData.filter(i => i.status==='Low Stock' || i.status==='Out of Stock');
+  document.getElementById('lowStockCount').textContent = low.length;
+  document.getElementById('lowStockList').innerHTML = low.map(i => `
+    <div class="list-item">
+      <div class="avatar-sm">${i.code.slice(-2)}</div>
+      <div class="list-body">
+        <div class="list-title">${i.name}</div>
+        <div class="list-sub">${i.warehouse}</div>
+      </div>
+      ${statusBadge(i.status)}
+    </div>`).join('') || emptyRow('Semua stok dalam kondisi aman.');
+}
+
+function renderPendingApprovals(){
+  const pending = approvalsData.filter(a => a.status === 'Pending');
+  document.getElementById('pendingApprovalList').innerHTML = pending.map(a => `
+    <div class="list-item">
+      <div class="list-icon in" style="background:var(--color-info-bg); color:var(--color-info);">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3L20 6.5V11C20 16 16.5 19.7 12 21C7.5 19.7 4 16 4 11V6.5L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="list-body">
+        <div class="list-title">${a.req}</div>
+        <div class="list-sub">${a.by} · ${a.amount}</div>
+      </div>
+      ${statusBadge(a.status)}
+    </div>`).join('') || emptyRow('Tidak ada permintaan yang menunggu.');
+}
+function emptyRow(msg){ return `<div class="state-block" style="padding:28px 20px;"><div class="text-helper">${msg}</div></div>`; }
+
+/* ============================================================
+   CUSTOM SVG BAR CHART (no image, no library)
+   ============================================================ */
+function renderBarChart(containerId, data, opts={}){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  const W = container.clientWidth || 600, H = opts.height || 220;
+  const padL = 34, padB = 26, padT = 10, padR = 6;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const maxVal = Math.max(...data.map(d => Math.max(d.inQ, d.outQ))) * 1.15;
+  const groupW = plotW / data.length;
+  const barW = Math.min(16, groupW * 0.28);
+  const gap = 6;
+
+  const styles = getComputedStyle(document.documentElement);
+  const cAccent = styles.getPropertyValue('--color-accent').trim();
+  const cSecondary = styles.getPropertyValue('--color-secondary-500').trim();
+  const cBorder = styles.getPropertyValue('--color-border').trim();
+  const cMuted = styles.getPropertyValue('--color-muted').trim();
+
+  let gridLines = '';
+  const steps = 4;
+  for(let s=0; s<=steps; s++){
+    const y = padT + plotH - (plotH/steps)*s;
+    const val = Math.round((maxVal/steps)*s);
+    gridLines += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="${cBorder}" stroke-width="1" />`;
+    gridLines += `<text x="${padL-8}" y="${y+4}" font-size="10.5" text-anchor="end" fill="${cMuted}" font-family="Plus Jakarta Sans">${val}</text>`;
+  }
+
+  let bars = '';
+  let labels = '';
+  data.forEach((d,i) => {
+    const gx = padL + i*groupW;
+    const inH = (d.inQ/maxVal)*plotH;
+    const outH = (d.outQ/maxVal)*plotH;
+    const x1 = gx + groupW/2 - barW - gap/2;
+    const x2 = gx + groupW/2 + gap/2;
+    bars += `<rect class="bar-rect" data-idx="${i}" data-series="in" x="${x1}" y="${padT+plotH-inH}" width="${barW}" height="${inH}" rx="3" fill="${cAccent}"></rect>`;
+    bars += `<rect class="bar-rect" data-idx="${i}" data-series="out" x="${x2}" y="${padT+plotH-outH}" width="${barW}" height="${outH}" rx="3" fill="${cSecondary}"></rect>`;
+    labels += `<text x="${gx+groupW/2}" y="${H-6}" font-size="11" text-anchor="middle" fill="${cMuted}" font-family="Plus Jakarta Sans" font-weight="600">${d.d}</text>`;
+  });
+
+  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="Grafik pergerakan stok">${gridLines}${bars}${labels}</svg>
+    <div class="chart-tooltip" id="${containerId}-tooltip"></div>`;
+
+  const tooltip = document.getElementById(containerId+'-tooltip');
+  container.querySelectorAll('.bar-rect').forEach(bar => {
+    bar.addEventListener('mousemove', (e) => {
+      const idx = +bar.dataset.idx;
+      const d = data[idx];
+      const rect = container.getBoundingClientRect();
+      tooltip.innerHTML = `<div class="tt-title">${d.d}</div>
+        <div class="tt-row"><span class="tt-dot" style="background:${cAccent}"></span>Stock In: ${d.inQ}</div>
+        <div class="tt-row"><span class="tt-dot" style="background:${cSecondary}"></span>Stock Out: ${d.outQ}</div>`;
+      tooltip.style.left = (e.clientX - rect.left) + 'px';
+      tooltip.style.top = (e.clientY - rect.top) + 'px';
+      tooltip.classList.add('show');
+    });
+    bar.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+  });
+}
+
+function renderCharts(){
+  renderBarChart('movementChart', movement7d, {height:220});
+  renderBarChart('monthlyChart', monthly12, {height:260});
+}
+window.addEventListener('resize', () => { clearTimeout(window.__chartResize); window.__chartResize = setTimeout(renderCharts, 150); });
+
+/* ============================================================
+   ITEMS TABLE (search / filter / pagination)
+   ============================================================ */
+let itemsState = { page:1, pageSize:6, search:'', category:'', status:'' };
+
+function populateCategoryFilter(){
+  const sel = document.getElementById('itemCategoryFilter');
+  categories.forEach(c => sel.appendChild(el(`<option value="${c}">${c}</option>`)));
+}
+
+function getFilteredItems(){
+  return itemsData.filter(i => {
+    const matchSearch = !itemsState.search || i.name.toLowerCase().includes(itemsState.search) || i.code.toLowerCase().includes(itemsState.search);
+    const matchCat = !itemsState.category || i.category === itemsState.category;
+    const matchStatus = !itemsState.status || i.status === itemsState.status;
+    return matchSearch && matchCat && matchStatus;
+  });
+}
+
+function renderItemsTable(){
+  const filtered = getFilteredItems();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsState.pageSize));
+  itemsState.page = Math.min(itemsState.page, totalPages);
+  const start = (itemsState.page-1) * itemsState.pageSize;
+  const pageItems = filtered.slice(start, start + itemsState.pageSize);
+
+  document.getElementById('itemResultCount').textContent = `${filtered.length} item`;
+  const tbody = document.getElementById('itemsTableBody');
+  const emptyWrap = document.getElementById('itemsEmptyState');
+
+  if(pageItems.length === 0){
+    tbody.innerHTML = '';
+    emptyWrap.innerHTML = `<div class="state-block">
+      <div class="state-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="state-title">Item tidak ditemukan</div>
+      <div class="state-desc">Coba ubah kata kunci pencarian atau filter yang digunakan.</div>
+      <button class="btn btn-secondary btn-sm" id="resetItemFilters">Reset Filter</button>
+    </div>`;
+    document.getElementById('resetItemFilters').addEventListener('click', () => {
+      itemsState = {...itemsState, search:'', category:'', status:''};
+      document.getElementById('itemSearch').value='';
+      document.getElementById('itemCategoryFilter').value='';
+      document.getElementById('itemStatusFilter').value='';
+      renderItemsTable();
+    });
+  } else {
+    emptyWrap.innerHTML = '';
+    tbody.innerHTML = pageItems.map(i => `
+      <tr>
+        <td class="cell-mono">${i.code}</td>
+        <td>
+          <div class="cell-with-icon">
+            <div class="avatar-sm">${i.code.slice(-2)}</div>
+            <span class="cell-primary">${i.name}</span>
+          </div>
+        </td>
+        <td class="cell-muted">${i.category}</td>
+        <td class="cell-muted">${i.warehouse}</td>
+        <td class="num cell-primary">${i.qty.toLocaleString('id-ID')}</td>
+        <td>${statusBadge(i.status)}</td>
+        <td class="cell-muted">${i.updated}</td>
+        <td>
+          <div class="row-actions">
+            <button class="icon-btn action-trigger" aria-label="Aksi lainnya">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg>
+            </button>
+            <div class="action-menu">
+              <button data-act="view" data-code="${i.code}"><svg viewBox="0 0 24 24" fill="none"><path d="M2 12C2 12 5.5 5 12 5C18.5 5 22 12 22 12C22 12 18.5 19 12 19C5.5 19 2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>Lihat Detail</button>
+              <button data-act="edit" data-code="${i.code}" data-perm-action="edit"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20L4.7 16.5L16 5.2C16.5 4.7 17.4 4.7 17.9 5.2L18.8 6.1C19.3 6.6 19.3 7.5 18.8 8L7.5 19.3L4 20Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Edit Item</button>
+              <hr>
+              <button class="danger" data-act="delete" data-code="${i.code}" data-perm-action="delete"><svg viewBox="0 0 24 24" fill="none"><path d="M5 7H19M9 7V5C9 4.4 9.4 4 10 4H14C14.6 4 15 4.4 15 5V7M18 7L17.3 19C17.3 19.6 16.8 20 16.2 20H7.8C7.2 20 6.7 19.6 6.7 19L6 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Hapus Item</button>
+            </div>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  renderItemsPagination(filtered.length, totalPages);
+  applyRole(roleSelect.value);
+}
+
+function renderItemsPagination(total, totalPages){
+  const start = (itemsState.page-1)*itemsState.pageSize + 1;
+  const end = Math.min(itemsState.page*itemsState.pageSize, total);
+  let btns = '';
+  for(let p=1; p<=totalPages; p++){
+    if(totalPages > 6 && p !== 1 && p !== totalPages && Math.abs(p-itemsState.page) > 1){
+      if(p === 2 || p === totalPages-1) btns += `<span class="text-helper" style="padding:0 4px;">…</span>`;
+      continue;
+    }
+    btns += `<button class="page-btn ${p===itemsState.page?'active':''}" data-p="${p}">${p}</button>`;
+  }
+  document.getElementById('itemsPagination').innerHTML = total === 0 ? '' : `
+    <div class="text-helper">Menampilkan ${start}–${end} dari ${total} item</div>
+    <div class="pagination-btns">
+      <button class="page-btn" id="prevPage" ${itemsState.page===1?'disabled':''}><svg viewBox="0 0 24 24" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      ${btns}
+      <button class="page-btn" id="nextPage" ${itemsState.page===totalPages?'disabled':''}><svg viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>`;
+  document.querySelectorAll('#itemsPagination [data-p]').forEach(b => b.addEventListener('click', () => { itemsState.page = +b.dataset.p; renderItemsTable(); }));
+  const prev = document.getElementById('prevPage'), next = document.getElementById('nextPage');
+  if(prev) prev.addEventListener('click', () => { if(itemsState.page>1){ itemsState.page--; renderItemsTable(); } });
+  if(next) next.addEventListener('click', () => { if(itemsState.page<totalPages){ itemsState.page++; renderItemsTable(); } });
+}
+
+document.getElementById('itemSearch').addEventListener('input', e => { itemsState.search = e.target.value.toLowerCase(); itemsState.page = 1; renderItemsTable(); });
+document.getElementById('itemCategoryFilter').addEventListener('change', e => { itemsState.category = e.target.value; itemsState.page = 1; renderItemsTable(); });
+document.getElementById('itemStatusFilter').addEventListener('change', e => { itemsState.status = e.target.value; itemsState.page = 1; renderItemsTable(); });
+
+document.getElementById('itemsTableBody').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if(!btn) return;
+  const code = btn.dataset.code;
+  const item = itemsData.find(i => i.code === code);
+  if(btn.dataset.act === 'delete'){
+    confirmAction(`Hapus ${item.name}?`, `Item ${item.code} akan dihapus permanen dari inventory. Tindakan ini tidak dapat dibatalkan.`, () => {
+      const idx = itemsData.indexOf(item);
+      itemsData.splice(idx,1);
+      renderItemsTable(); renderStatGrid(); renderLowStock();
+      showToast('success','Item dihapus', `${item.name} telah dihapus dari inventory.`);
+    });
+  } else if(btn.dataset.act === 'edit'){
+    showToast('info','Mode edit', `Membuka form edit untuk ${item.code}.`);
+  } else if(btn.dataset.act === 'view'){
+    showToast('info', item.name, `${item.code} · ${item.qty} unit di ${item.warehouse}.`);
+  }
+});
+
+/* ============================================================
+   SIMPLE TABLE RENDERERS (stock in/out, opname, assets, users, roles, audit)
+   ============================================================ */
+function renderStockIn(){
+  document.getElementById('stockInTableBody').innerHTML = stockInData.map(r => `
+    <tr><td class="cell-mono">${r.ref}</td><td class="cell-primary">${r.item}</td><td class="cell-muted">${r.wh}</td><td class="num cell-primary">+${r.qty}</td><td class="cell-muted">${r.supplier}</td><td>${statusBadge(r.status)}</td><td class="cell-muted">${r.date}</td></tr>`).join('');
+}
+function renderStockOut(){
+  document.getElementById('stockOutTableBody').innerHTML = stockOutData.map(r => `
+    <tr><td class="cell-mono">${r.ref}</td><td class="cell-primary">${r.item}</td><td class="cell-muted">${r.wh}</td><td class="num cell-primary">-${r.qty}</td><td class="cell-muted">${r.req}</td><td>${statusBadge(r.status)}</td><td class="cell-muted">${r.date}</td></tr>`).join('');
+}
+function renderOpname(){
+  document.getElementById('opnameTableBody').innerHTML = opnameData.map(r => `
+    <tr><td class="cell-mono">${r.session}</td><td class="cell-muted">${r.wh}</td><td class="cell-primary">${r.pic}</td><td class="num">${r.checked}</td><td class="num" style="color:${r.disc>0?'var(--color-warning)':'var(--color-success)'};font-weight:700;">${r.disc}</td><td>${statusBadge(r.status)}</td><td class="cell-muted">${r.date}</td></tr>`).join('');
+}
+function renderAssets(){
+  document.getElementById('assetsTableBody').innerHTML = assetsData.map(r => `
+    <tr><td class="cell-mono">${r.id}</td><td class="cell-primary">${r.name}</td><td class="cell-muted">${r.category}</td><td class="cell-muted">${r.assignee}</td><td class="cell-muted">${r.loc}</td><td>${statusBadge(r.cond)}</td><td>${statusBadge(r.status)}</td></tr>`).join('');
+}
+function renderUsers(){
+  document.getElementById('usersTableBody').innerHTML = usersData.map(u => `
+    <tr><td><div class="cell-with-icon"><div class="avatar-sm">${initials(u.name)}</div><span class="cell-primary">${u.name}</span></div></td><td class="cell-muted">${u.email}</td><td><span class="badge badge-neutral">${u.role}</span></td><td class="cell-muted">${u.access}</td><td>${statusBadge(u.status)}</td><td class="cell-muted">${u.last}</td></tr>`).join('');
+}
+function renderRoles(){
+  const check = `<svg viewBox="0 0 24 24" fill="none" style="width:17px;height:17px;color:var(--color-success);"><path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const cross = `<svg viewBox="0 0 24 24" fill="none" style="width:15px;height:15px;color:var(--color-muted);opacity:0.4;"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+  document.getElementById('rolesTableBody').innerHTML = rolesMatrix.map(r => `
+    <tr><td class="cell-primary">${r.perm}</td><td style="text-align:center">${r.admin?check:cross}</td><td style="text-align:center">${r.manager?check:cross}</td><td style="text-align:center">${r.staff?check:cross}</td></tr>`).join('');
+}
+function renderAudit(){
+  document.getElementById('auditTableBody').innerHTML = auditData.map(a => `
+    <tr><td class="cell-muted num">${a.ts}</td><td class="cell-primary">${a.user}</td><td class="cell-muted">${a.action}</td><td class="cell-muted">${a.entity}</td><td class="cell-mono">${a.ip}</td></tr>`).join('');
+}
+function renderWarehouse(){
+  document.getElementById('warehouseGrid').innerHTML = warehouseStats.map(w => {
+    const kind = w.used >= 90 ? 'danger' : (w.used >= 75 ? 'warn' : '');
+    return `<div class="stat-card">
+      <div class="stat-top"><div class="text-card-title" style="text-transform:none;font-size:13.5px;color:var(--color-text);font-weight:700;">${w.name}</div></div>
+      <div class="flex justify-between items-center mb-3"><span class="text-helper">Utilisasi Ruang</span><span class="cell-primary num">${w.used}%</span></div>
+      <div class="progress"><div class="progress-fill ${kind}" style="width:${w.used}%"></div></div>
+      <div class="flex justify-between mt-3"><span class="text-caption">${w.capacity}</span><span class="text-caption">${w.items} SKU</span></div>
+    </div>`;
+  }).join('');
+}
+function renderCategoryBars(){
+  document.getElementById('categoryBars').innerHTML = categoryBreakdown.map(c => `
+    <div>
+      <div class="flex justify-between mb-1"><span class="text-body">${c.name}</span><span class="cell-primary num">${c.pct}%</span></div>
+      <div class="progress"><div class="progress-fill" style="width:${c.pct}%"></div></div>
+    </div>`).join('');
+}
+
+/* ============================================================
+   APPROVALS TAB
+   ============================================================ */
+let approvalTab = 'pending';
+function renderApprovals(){
+  document.getElementById('tabPendingCount').textContent = '(' + approvalsData.filter(a=>a.status==='Pending').length + ')';
+  const rows = approvalsData.filter(a => a.status.toLowerCase() === approvalTab);
+  const tbody = document.getElementById('approvalsTableBody');
+  if(rows.length === 0){
+    tbody.innerHTML = `<tr><td colspan="7">${emptyRow('Tidak ada data pada kategori ini.')}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map((a, idx) => `
+    <tr>
+      <td class="cell-primary">${a.req}</td>
+      <td class="cell-muted">${a.type}</td>
+      <td class="cell-muted">${a.by}</td>
+      <td class="num cell-primary">${a.amount}</td>
+      <td class="cell-muted">${a.date}</td>
+      <td>${statusBadge(a.status)}</td>
+      <td>
+        ${a.status === 'Pending' ? `
+        <div class="flex gap-2" data-perm="manager">
+          <button class="btn btn-secondary btn-sm" data-approve="${a.req}"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Approve</button>
+          <button class="btn btn-ghost btn-sm" style="color:var(--color-error);" data-reject="${a.req}">Reject</button>
+        </div>` : ''}
+      </td>
+    </tr>`).join('');
+  applyRole(roleSelect.value);
+}
+document.querySelectorAll('[data-approval-tab]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-approval-tab]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    approvalTab = btn.dataset.approvalTab;
+    renderApprovals();
+  });
+});
+document.getElementById('approvalsTableBody').addEventListener('click', e => {
+  const appBtn = e.target.closest('[data-approve]');
+  const rejBtn = e.target.closest('[data-reject]');
+  if(appBtn){
+    const item = approvalsData.find(a => a.req === appBtn.dataset.approve);
+    confirmAction('Setujui permintaan ini?', `"${item.req}" akan disetujui dan diteruskan untuk diproses.`, () => {
+      item.status = 'Approved'; renderApprovals(); renderPendingApprovals(); renderStatGrid();
+      showToast('success','Permintaan disetujui', `${item.req} telah disetujui.`);
+    }, 'primary', 'Approve');
+  } else if(rejBtn){
+    const item = approvalsData.find(a => a.req === rejBtn.dataset.reject);
+    confirmAction('Tolak permintaan ini?', `"${item.req}" akan ditolak dan pemohon akan diberi notifikasi.`, () => {
+      item.status = 'Rejected'; renderApprovals(); renderPendingApprovals(); renderStatGrid();
+      showToast('warning','Permintaan ditolak', `${item.req} telah ditolak.`);
+    }, 'danger', 'Reject');
+  }
+});
+
+/* ============================================================
+   GLOBAL SEARCH → jump to Items
+   ============================================================ */
+document.getElementById('globalSearch').addEventListener('keydown', e => {
+  if(e.key === 'Enter' && e.target.value.trim()){
+    goToPage('items');
+    document.getElementById('itemSearch').value = e.target.value;
+    itemsState.search = e.target.value.toLowerCase();
+    itemsState.page = 1;
+    renderItemsTable();
+  }
+});
+
+/* ============================================================
+   INITIAL BOOT — simulate a brief loading state for the table
+   ============================================================ */
+function bootTableSkeleton(){
+  const tbody = document.getElementById('itemsTableBody');
+  let rows = '';
+  for(let i=0;i<5;i++){
+    rows += `<tr><td colspan="8"><div class="sk-row" style="border:none;padding:13px 0;">
+      <div class="skeleton sk-block" style="width:70px;"></div>
+      <div class="skeleton sk-block" style="width:180px;"></div>
+      <div class="skeleton sk-block" style="width:100px;"></div>
+      <div class="skeleton sk-block" style="width:60px; margin-left:auto;"></div>
+    </div></td></tr>`;
+  }
+  tbody.innerHTML = rows;
+}
+
+function init(){
+  populateCategoryFilter();
+  renderStatGrid();
+  renderRecentTx();
+  renderLowStock();
+  renderPendingApprovals();
+  renderCharts();
+  bootTableSkeleton();
+  renderStockIn(); renderStockOut(); renderOpname(); renderAssets();
+  renderUsers(); renderRoles(); renderAudit(); renderWarehouse(); renderCategoryBars();
+  renderApprovals();
+  applyRole('admin');
+  setTimeout(renderItemsTable, 550); // brief loading → then real content, demonstrating loading state
+}
+init();
+</script>
+</body>
+</html>
