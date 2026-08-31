@@ -1,9 +1,9 @@
 <!--
- * File: GuestLayout.vue
- * Path: resources/js/Layouts/GuestLayout.vue
- * Purpose: Provides a split-panel guest template (Left: Brand Panel, Right: Form Container).
- * Used for: Unauthenticated pages such as Login, Password Reset, and Account Request.
- * Reference: docs/template/inventra-login.html
+ * Berkas: GuestLayout.vue
+ * Jalur: resources/js/Layouts/GuestLayout.vue
+ * Tujuan: Menyediakan template tata letak tamu dengan desain split-panel (Kiri: Panel Brand, Kanan: Kontainer Formulir).
+ * Digunakan untuk: Halaman tamu yang belum terautentikasi seperti Login, Reset Kata Sandi, dan Permintaan Akun.
+ * Referensi: docs/template/inventra-login.html
  -->
 
 <script setup>
@@ -11,7 +11,7 @@ import { ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
 // ==========================================
-// CONFIGURATIONS & STATE MANAGEMENT
+// KONFIGURASI & MANAJEMEN STATE
 // ==========================================
 
 const theme = ref('light');

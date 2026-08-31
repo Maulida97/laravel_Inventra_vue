@@ -1,11 +1,11 @@
 /*
- * File: inventra_template.css
- * Path: resources/css/inventra_template.css
- * Purpose: Contains all CSS custom properties (design tokens), layout guidelines,
- *          and global styles extracted from the Inventra admin dashboard and login templates.
- * Used for: Styling the application shell, forms, buttons, cards, list items,
- *           table views, alerts, notifications, and dark theme toggling dynamically.
- * Reference: docs/template/inventra_admin_dashboard.html & docs/template/inventra-login.html
+ * Berkas: inventra_template.css
+ * Jalur: resources/css/inventra_template.css
+ * Tujuan: Menyimpan seluruh variabel CSS custom properties (design tokens), panduan tata letak,
+ *          dan gaya global yang diekstrak dari berkas template dasbor admin dan login Inventra.
+ * Digunakan untuk: Memberikan gaya pada shell aplikasi, formulir, tombol, kartu stat, daftar item,
+ *           tampilan tabel, alert error, notifikasi, dan sakelar tema gelap/terang secara dinamis.
+ * Referensi: docs/template/inventra_admin_dashboard.html & docs/template/inventra-login.html
  */
 
 /* ============================================================

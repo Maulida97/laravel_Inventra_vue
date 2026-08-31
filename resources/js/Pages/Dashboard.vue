@@ -1,9 +1,9 @@
 <!--
- * File: Dashboard.vue
- * Path: resources/js/Pages/Dashboard.vue
- * Purpose: Provides a dashboard summary page with status indicators, stock movement charts, transactions list, and warehouse capacity charts.
- * Used for: The main page after successful login.
- * Reference: docs/template/inventra_admin_dashboard.html
+ * Berkas: Dashboard.vue
+ * Jalur: resources/js/Pages/Dashboard.vue
+ * Tujuan: Menyediakan ringkasan halaman dasbor utama dengan indikator status, grafik pergerakan stok, daftar transaksi terbaru, dan utilisasi kapasitas gudang.
+ * Digunakan untuk: Halaman utama setelah berhasil masuk ke sistem.
+ * Referensi: docs/template/inventra_admin_dashboard.html
  -->
 
 <script setup>
@@ -12,7 +12,7 @@ import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 // ==========================================
-// CONFIGURATIONS, METHODS & MOCK DATA
+// KONFIGURASI, METODE & DATA MOCK
 // ==========================================
 
 const handleRefresh = () => {
@@ -27,7 +27,7 @@ const handleSeeAllTx = () => {
     alert('Mengarahkan ke modul riwayat mutasi barang pada Sprint 11.');
 };
 
-// Mock Stats Data
+// Data Mock Statistik
 const stats = ref([
     {
         title: 'Total Items',
@@ -63,7 +63,7 @@ const stats = ref([
     }
 ]);
 
-// Mock Transactions Data
+// Data Mock Transaksi
 const transactions = ref([
     { ref: 'IN-2026-001', type: 'in', name: 'Laptop ThinkPad L14', wh: 'Warehouse Utama', qty: '+100 PCS', desc: 'Supplier: Lenovo Indonesia', status: 'Approved' },
     { ref: 'OUT-2026-002', type: 'out', name: 'RAM DDR4 8GB', wh: 'Warehouse IT', qty: '-20 PCS', desc: 'Req: IT Support Department', status: 'Approved' },
@@ -71,13 +71,13 @@ const transactions = ref([
     { ref: 'OUT-2026-004', type: 'out', name: 'SSD 512GB M.2', wh: 'Warehouse IT', qty: '-5 PCS', desc: 'Req: R&D Department', status: 'Pending' }
 ]);
 
-// Mock Low Stock Items
+// Data Mock Barang Stok Menipis
 const lowStockItems = ref([
     { name: 'RAM DDR4 8GB', wh: 'Warehouse IT', stock: 2, min: 10, unit: 'PCS' },
     { name: 'SSD 512GB M.2', wh: 'Warehouse IT', stock: 1, min: 5, unit: 'PCS' }
 ]);
 
-// Mock Warehouse Capacity
+// Data Mock Kapasitas Gudang
 const warehouses = ref([
     { name: 'Warehouse Utama', utilization: 78, type: 'warn' },
     { name: 'Warehouse IT', utilization: 42, type: 'normal' },

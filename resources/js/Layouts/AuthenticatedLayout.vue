@@ -1,9 +1,9 @@
 <!--
- * File: AuthenticatedLayout.vue
- * Path: resources/js/Layouts/AuthenticatedLayout.vue
- * Purpose: Provides the main application shell for authenticated users, including sidebar navigation, top bar, and page content layouts.
- * Used for: Rendering all back-office dashboard views, transaction modules, reports, and administrative forms.
- * Reference: docs/template/inventra_admin_dashboard.html
+ * Berkas: AuthenticatedLayout.vue
+ * Jalur: resources/js/Layouts/AuthenticatedLayout.vue
+ * Tujuan: Menyediakan kerangka utama aplikasi untuk pengguna terautentikasi, termasuk navigasi sidebar, top bar, dan konten halaman.
+ * Digunakan untuk: Menampilkan halaman dasbor back-office, modul transaksi, pelaporan, dan formulir administrasi.
+ * Referensi: docs/template/inventra_admin_dashboard.html
  -->
 
 <script setup>
@@ -11,19 +11,19 @@ import { ref, onMounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
 // ==========================================
-// CONFIGURATIONS & STATE MANAGEMENT
+// KONFIGURASI & MANAJEMEN STATE
 // ==========================================
 const page = usePage();
 const user = page.props.auth.user;
 
-// Sidebar states
+// State Sidebar
 const isCollapsed = ref(false);
 const isMobileOpen = ref(false);
 
-// Theme state
+// State Tema
 const theme = ref('light');
 
-// Dropdowns
+// Menu Dropdown
 const showUserMenu = ref(false);
 const showNotifMenu = ref(false);
 

@@ -1,9 +1,9 @@
 <!--
- * File: Login.vue
- * Path: resources/js/Pages/Auth/Login.vue
- * Purpose: Renders the work email and password form with password visibility toggle, remember-me options, and validation.
- * Used for: User authentication onto the Inventra platform.
- * Reference: docs/template/inventra-login.html
+ * Berkas: Login.vue
+ * Jalur: resources/js/Pages/Auth/Login.vue
+ * Tujuan: Merender formulir email kerja dan kata sandi dengan tombol tampilkan/sembunyikan kata sandi, pilihan ingat-saya, dan penanganan validasi.
+ * Digunakan untuk: Proses otentikasi masuk pengguna ke platform Inventra.
+ * Referensi: docs/template/inventra-login.html
  -->
 
 <script setup>
@@ -12,7 +12,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 // ==========================================
-// CONFIGURATIONS, STATES & ACTIONS
+// KONFIGURASI, STATE & AKSI
 // ==========================================
 
 defineProps({
@@ -61,7 +61,7 @@ const handleSSO = () => {
             {{ status }}
         </div>
 
-        <!-- Alert Error General (laravel auth errors) -->
+        <!-- Alert Error Umum (Kesalahan Autentikasi Laravel) -->
         <div v-if="form.errors.email || form.errors.password" class="alert show mb-4">
             <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M15 9L9 15M9 9L15 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
             <div>
@@ -73,7 +73,7 @@ const handleSSO = () => {
         </div>
 
         <form @submit.prevent="submit">
-            <!-- Email Field -->
+            <!-- Field Input Email -->
             <div class="field" :class="{ 'error': form.errors.email }">
                 <label class="field-label" for="email">Email Kerja</label>
                 <div class="input-wrap">
@@ -96,7 +96,7 @@ const handleSSO = () => {
                 </div>
             </div>
 
-            <!-- Password Field -->
+            <!-- Field Input Kata Sandi -->
             <div class="field" :class="{ 'error': form.errors.password }">
                 <div class="field-label">
                     <label for="password">Kata Sandi</label>
@@ -134,7 +134,7 @@ const handleSSO = () => {
                 </div>
             </div>
 
-            <!-- Remember Me -->
+            <!-- Pilihan Ingat Saya -->
             <div class="row-between">
                 <div class="checkbox-row">
                     <input type="checkbox" id="remember" v-model="form.remember">
@@ -142,7 +142,7 @@ const handleSSO = () => {
                 </div>
             </div>
 
-            <!-- Submit Button -->
+            <!-- Tombol Kirim Form -->
             <button type="submit" class="btn btn-primary" :class="{ 'loading': form.processing }" :disabled="form.processing">
                 <span class="spinner"></span>
                 <span class="btn-label">Masuk</span>
@@ -150,7 +150,7 @@ const handleSSO = () => {
 
             <div class="divider"><span>atau</span></div>
 
-            <!-- SSO Button -->
+            <!-- Tombol Masuk via SSO -->
             <button type="button" class="btn btn-secondary" @click="handleSSO">
                 <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3 9H21" stroke="currentColor" stroke-width="1.7"/><path d="M7 13H12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
                 Masuk dengan Single Sign-On
