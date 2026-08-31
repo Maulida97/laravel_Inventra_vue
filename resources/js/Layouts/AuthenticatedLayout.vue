@@ -10,6 +10,7 @@
 import { ref, onMounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Toaster, toast } from 'vue-sonner';
+import 'vue-sonner/style.css';
 
 // ==========================================
 // KONFIGURASI & MANAJEMEN STATE
