@@ -1,25 +1,30 @@
 <?php
+/*
+ * Berkas: DatabaseSeeder.php
+ * Jalur: database/seeders/DatabaseSeeder.php
+ * Tujuan: Melakukan pengisian data awal (seeding) ke dalam database aplikasi.
+ * Digunakan untuk: Menyediakan pengguna awal Administrator (admin@inventra.com) dan data master demo.
+ * Referensi: PRD Sistem & Modul Inventra
+ */
 
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
-     * Seed the application's database.
+     * Jalankan proses pengisian database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // ==========================================
+        // DATA AWAL PENGGUNA (SEED DEFAULT USER)
+        // ==========================================
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Administrator',
+            'email' => 'admin@inventra.com',
         ]);
     }
 }

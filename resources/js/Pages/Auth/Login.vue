@@ -25,7 +25,7 @@ defineProps({
 });
 
 const form = useForm({
-    email: '', // default value from template
+    email: 'admin@inventra.com', // nilai default email untuk login admin
     password: '',
     remember: false,
 });
