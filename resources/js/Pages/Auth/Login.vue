@@ -1,7 +1,19 @@
+<!--
+ * File: Login.vue
+ * Path: resources/js/Pages/Auth/Login.vue
+ * Purpose: Renders the work email and password form with password visibility toggle, remember-me options, and validation.
+ * Used for: User authentication onto the Inventra platform.
+ * Reference: docs/template/inventra-login.html
+ -->
+
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+
+// ==========================================
+// CONFIGURATIONS, STATES & ACTIONS
+// ==========================================
 
 defineProps({
     canResetPassword: {
@@ -13,7 +25,7 @@ defineProps({
 });
 
 const form = useForm({
-    email: 'rangga.a@inventra.co.id', // default value from template
+    email: '', // default value from template
     password: '',
     remember: false,
 });

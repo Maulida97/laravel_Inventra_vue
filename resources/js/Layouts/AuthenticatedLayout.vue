@@ -1,7 +1,18 @@
+<!--
+ * File: AuthenticatedLayout.vue
+ * Path: resources/js/Layouts/AuthenticatedLayout.vue
+ * Purpose: Provides the main application shell for authenticated users, including sidebar navigation, top bar, and page content layouts.
+ * Used for: Rendering all back-office dashboard views, transaction modules, reports, and administrative forms.
+ * Reference: docs/template/inventra_admin_dashboard.html
+ -->
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
+// ==========================================
+// CONFIGURATIONS & STATE MANAGEMENT
+// ==========================================
 const page = usePage();
 const user = page.props.auth.user;
 

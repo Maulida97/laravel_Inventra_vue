@@ -1,3 +1,13 @@
+/*
+ * File: inventra_template.css
+ * Path: resources/css/inventra_template.css
+ * Purpose: Contains all CSS custom properties (design tokens), layout guidelines,
+ *          and global styles extracted from the Inventra admin dashboard and login templates.
+ * Used for: Styling the application shell, forms, buttons, cards, list items,
+ *           table views, alerts, notifications, and dark theme toggling dynamically.
+ * Reference: docs/template/inventra_admin_dashboard.html & docs/template/inventra-login.html
+ */
+
 /* ============================================================
    INVENTRA — DESIGN TOKENS
    ============================================================ */

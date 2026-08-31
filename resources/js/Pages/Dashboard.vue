@@ -1,7 +1,19 @@
+<!--
+ * File: Dashboard.vue
+ * Path: resources/js/Pages/Dashboard.vue
+ * Purpose: Provides a dashboard summary page with status indicators, stock movement charts, transactions list, and warehouse capacity charts.
+ * Used for: The main page after successful login.
+ * Reference: docs/template/inventra_admin_dashboard.html
+ -->
+
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
+
+// ==========================================
+// CONFIGURATIONS, METHODS & MOCK DATA
+// ==========================================
 
 const handleRefresh = () => {
     alert('Data dashboard diperbarui!');
