@@ -230,14 +230,6 @@ const handleMockFeature = (name) => {
                 </div>
 
                 <div class="topbar-right">
-                    <select class="role-select" aria-label="Ganti peran (demo)">
-                        <option value="admin">Peran: Admin (Aktif)</option>
-                        <option value="manager">Peran: Manager</option>
-                        <option value="staff">Peran: Staff</option>
-                    </select>
-
-                    <div class="divider-v"></div>
-
                     <!-- Theme Toggle -->
                     <button class="icon-btn" @click="toggleTheme" aria-label="Ganti tema">
                         <svg v-if="theme === 'light'" viewBox="0 0 24 24" fill="none">

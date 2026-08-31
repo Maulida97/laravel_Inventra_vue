@@ -286,7 +286,7 @@
 @media (min-width:900px){ .user-chip-text{ display:block; } }
 
 /* ---- Content ---- */
-.content{ padding:var(--sp-5); flex:1; max-width:1360px; width:100%; }
+.content{ padding:var(--sp-5); flex:1; max-width:100%; width:100%; }
 .page{ display:none; animation:fadeIn 180ms ease; }
 .page.active{ display:block; }
 @keyframes fadeIn{ from{ opacity:0; transform:translateY(4px); } to{ opacity:1; transform:translateY(0); } }
