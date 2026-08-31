@@ -1,3 +1,11 @@
+<!--
+ * Berkas: ResetPassword.vue
+ * Jalur: resources/js/Pages/Auth/ResetPassword.vue
+ * Tujuan: Menyediakan antarmuka penyetelan ulang kata sandi pengguna baru berdasarkan token pemulihan.
+ * Digunakan untuk: Memperbarui kata sandi lama dengan kata sandi baru yang telah divalidasi.
+ * Referensi: Desain Dasar Inventra
+ -->
+
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -5,6 +13,10 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+
+// ==========================================
+// KONFIGURASI & FORM SUBMIT
+// ==========================================
 
 const props = defineProps({
     email: {

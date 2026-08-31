@@ -1,6 +1,18 @@
+<!--
+ * Berkas: GuestLayout.vue
+ * Jalur: resources/js/Layouts/GuestLayout.vue
+ * Tujuan: Menyediakan template tata letak tamu dengan desain split-panel (Kiri: Panel Brand, Kanan: Kontainer Formulir).
+ * Digunakan untuk: Halaman tamu yang belum terautentikasi seperti Login, Reset Kata Sandi, dan Permintaan Akun.
+ * Referensi: docs/template/inventra-login.html
+ -->
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
+
+// ==========================================
+// KONFIGURASI & MANAJEMEN STATE
+// ==========================================
 
 const theme = ref('light');
 

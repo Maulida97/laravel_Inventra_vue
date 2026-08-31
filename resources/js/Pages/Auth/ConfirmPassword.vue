@@ -1,3 +1,11 @@
+<!--
+ * Berkas: ConfirmPassword.vue
+ * Jalur: resources/js/Pages/Auth/ConfirmPassword.vue
+ * Tujuan: Menyediakan antarmuka konfirmasi kata sandi sebelum pengguna dapat mengakses area sensitif.
+ * Digunakan untuk: Memastikan identitas pengguna dengan meminta konfirmasi kata sandi ulang.
+ * Referensi: Desain Dasar Inventra
+ -->
+
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -6,6 +14,9 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
+// ==========================================
+// KONFIGURASI & FORM SUBMIT
+// ==========================================
 const form = useForm({
     password: '',
 });

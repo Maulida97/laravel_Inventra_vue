@@ -1,3 +1,13 @@
+/*
+ * Berkas: inventra_template.css
+ * Jalur: resources/css/inventra_template.css
+ * Tujuan: Menyimpan seluruh variabel CSS custom properties (design tokens), panduan tata letak,
+ *          dan gaya global yang diekstrak dari berkas template dasbor admin dan login Inventra.
+ * Digunakan untuk: Memberikan gaya pada shell aplikasi, formulir, tombol, kartu stat, daftar item,
+ *           tampilan tabel, alert error, notifikasi, dan sakelar tema gelap/terang secara dinamis.
+ * Referensi: docs/template/inventra_admin_dashboard.html & docs/template/inventra-login.html
+ */
+
 /* ============================================================
    INVENTRA — DESIGN TOKENS
    ============================================================ */
@@ -628,3 +638,99 @@ tbody tr:hover{ background:var(--color-surface-alt); }
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
 }
+
+/* ============================================================
+   INVENTRA — LOGIN & SPLIT-PANEL SPECIFIC STYLES
+   ============================================================ */
+.screen{ min-height:100vh; display:flex; }
+
+/* ---------- Left brand panel ---------- */
+.brand-panel{
+  width:44%; min-width:420px; background:var(--color-secondary); color:#EAF0F7;
+  display:flex; flex-direction:column; justify-content:space-between;
+  padding:48px 56px; position:relative; overflow:hidden; flex-shrink:0;
+}
+.brand-top{ display:flex; align-items:center; gap:10px; position:relative; z-index:2; }
+.brand-mark{ width:34px; height:34px; border-radius:9px; background:var(--color-accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.brand-mark svg{ width:19px; height:19px; }
+.brand-name{ font-size:18px; font-weight:700; color:#fff; }
+
+.brand-mid{ position:relative; z-index:2; max-width:400px; }
+.brand-mid h1{ font-size:28px; font-weight:800; letter-spacing:-0.01em; line-height:1.28; color:#fff; }
+.brand-mid p{ font-size:14px; color:rgba(234,240,247,0.72); margin-top:14px; line-height:1.6; }
+
+.brand-stats{ display:flex; gap:28px; margin-top:32px; position:relative; z-index:2; }
+.brand-stat-value{ font-size:20px; font-weight:800; color:#fff; }
+.brand-stat-label{ font-size:12px; color:rgba(234,240,247,0.6); margin-top:2px; }
+
+.brand-foot{ position:relative; z-index:2; display:flex; align-items:center; gap:9px; font-size:12.5px; color:rgba(234,240,247,0.6); }
+.brand-foot svg{ width:15px; height:15px; flex-shrink:0; }
+
+/* decorative layered shapes */
+.brand-deco{ position:absolute; inset:0; z-index:1; opacity:0.9; }
+.deco-grid{ position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); background-size:34px 34px; }
+.deco-glow{ position:absolute; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle, rgba(37,99,235,0.28), transparent 65%); top:-160px; right:-180px; }
+.deco-crates{ position:absolute; bottom:-30px; right:-20px; display:flex; gap:10px; align-items:flex-end; opacity:0.5; }
+.crate{ background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); border-radius:8px; }
+
+/* ---------- Right form panel ---------- */
+.form-panel{ flex:1; display:flex; flex-direction:column; background:var(--color-bg); }
+.form-topbar{ display:flex; justify-content:flex-end; padding:24px 32px 0; }
+
+.form-center{ flex:1; display:flex; align-items:center; justify-content:center; padding:24px; }
+.form-card{ width:100%; max-width:378px; }
+
+.form-head{ margin-bottom:28px; }
+.form-head .eyebrow{ font-size:12px; font-weight:700; color:var(--color-accent); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px; }
+.form-head h2{ font-size:23px; font-weight:800; letter-spacing:-0.01em; }
+.form-head p{ font-size:13.5px; color:var(--color-muted); margin-top:6px; }
+
+.alert{ display:flex; gap:10px; align-items:flex-start; background:var(--color-error-bg); border:1px solid rgba(192,54,44,0.25); border-radius:var(--radius-md); padding:11px 13px; margin-bottom:18px; display:none; }
+.alert.show{ display:flex; }
+.alert svg{ width:17px; height:17px; color:var(--color-error); flex-shrink:0; margin-top:1px; }
+.alert-title{ font-size:12.5px; font-weight:700; color:var(--color-error); }
+.alert-desc{ font-size:12.5px; color:var(--color-text-secondary); margin-top:1px; }
+
+.input-wrap{ position:relative; }
+.input.has-icon{ padding-left:38px; }
+.input.has-toggle{ padding-right:40px; }
+.input-icon{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--color-muted); pointer-events:none; }
+.input-toggle{ position:absolute; right:6px; top:50%; transform:translateY(-50%); width:30px; height:30px; border-radius:6px; border:none; background:transparent; color:var(--color-muted); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.input-toggle:hover{ background:var(--color-surface-alt); color:var(--color-text); }
+.input-toggle svg{ width:16px; height:16px; }
+
+.row-between{ display:flex; align-items:center; justify-content:space-between; margin:4px 0 20px; }
+
+.divider{ display:flex; align-items:center; gap:12px; margin:22px 0; }
+.divider::before, .divider::after{ content:''; flex:1; height:1px; background:var(--color-border); }
+.divider span{ font-size:11.5px; font-weight:600; color:var(--color-muted); text-transform:uppercase; letter-spacing:0.04em; }
+
+.form-foot{ margin-top:26px; text-align:center; font-size:13px; color:var(--color-muted); }
+.form-foot a{ font-weight:600; }
+
+.form-bottombar{ padding:20px 32px; display:flex; justify-content:center; gap:18px; }
+.form-bottombar a{ font-size:12px; color:var(--color-muted); }
+.form-bottombar a:hover{ color:var(--color-text); }
+
+.demo-hint{ margin-top:18px; background:var(--color-info-bg); border:1px solid rgba(37,99,235,0.2); border-radius:var(--radius-md); padding:10px 12px; font-size:12px; color:var(--color-text-secondary); }
+.demo-hint b{ color:var(--color-text); }
+
+.spinner{ width:16px; height:16px; border-radius:50%; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; animation:spin 0.7s linear infinite; display:none; }
+.btn-primary.loading .spinner{ display:inline-block; }
+.btn-primary.loading .btn-label{ display:none; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+@media (max-width:920px){
+  .brand-panel{ display:none; }
+  .form-topbar{ justify-content:space-between; align-items:center; padding:20px; }
+  .mobile-brand{ display:flex; align-items:center; gap:9px; }
+  .mobile-brand .brand-mark{ width:30px; height:30px; }
+  .mobile-brand .brand-mark svg{ width:16px; height:16px; }
+  .mobile-brand span{ font-size:16px; font-weight:700; color:var(--color-text); }
+}
+@media (min-width:921px){ .mobile-brand{ display:none; } }
+@media (max-width:420px){
+  .form-center{ padding:16px; }
+  .form-bottombar{ flex-wrap:wrap; }
+}
+

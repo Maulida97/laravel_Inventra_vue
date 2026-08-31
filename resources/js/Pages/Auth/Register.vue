@@ -1,3 +1,11 @@
+<!--
+ * Berkas: Register.vue
+ * Jalur: resources/js/Pages/Auth/Register.vue
+ * Tujuan: Menyediakan antarmuka pendaftaran akun pengguna baru pada sistem.
+ * Digunakan untuk: Mendaftarkan nama, email, dan sandi baru untuk pengguna.
+ * Referensi: Desain Dasar Inventra
+ -->
+
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -5,6 +13,10 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+
+// ==========================================
+// KONFIGURASI & FORM SUBMIT
+// ==========================================
 
 const form = useForm({
     name: '',

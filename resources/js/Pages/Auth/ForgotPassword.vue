@@ -1,3 +1,11 @@
+<!--
+ * Berkas: ForgotPassword.vue
+ * Jalur: resources/js/Pages/Auth/ForgotPassword.vue
+ * Tujuan: Menyediakan antarmuka permintaan pemulihan kata sandi pengguna melalui email.
+ * Digunakan untuk: Mengirimkan tautan reset kata sandi ke email pengguna.
+ * Referensi: Desain Dasar Inventra
+ -->
+
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -5,6 +13,10 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+
+// ==========================================
+// KONFIGURASI & FORM SUBMIT
+// ==========================================
 
 defineProps({
     status: {
