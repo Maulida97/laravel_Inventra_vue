@@ -79,14 +79,14 @@ const handleSSO = () => {
                 <label class="field-label" for="email">Email Kerja</label>
                 <div class="input-wrap">
                     <svg class="input-icon" viewBox="0 0 24 24" fill="none"><path d="M3 6.5C3 5.7 3.7 5 4.5 5H19.5C20.3 5 21 5.7 21 6.5V17.5C21 18.3 20.3 19 19.5 19H4.5C3.7 19 3 18.3 3 17.5V6.5Z" stroke="currentColor" stroke-width="1.7"/><path d="M4 6.5L12 12.5L20 6.5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-                    <input 
-                        class="input has-icon" 
+                    <input
+                        class="input has-icon"
                         :class="{ 'has-error': form.errors.email }"
-                        type="email" 
-                        id="email" 
-                        placeholder="nama@perusahaan.co.id" 
-                        v-model="form.email" 
-                        required 
+                        type="email"
+                        id="email"
+                        placeholder="nama@perusahaan.co.id"
+                        v-model="form.email"
+                        required
                         autofocus
                         autocomplete="username"
                     >
@@ -107,14 +107,14 @@ const handleSSO = () => {
                 </div>
                 <div class="input-wrap">
                     <svg class="input-icon" viewBox="0 0 24 24" fill="none"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10.5V7.5C8 5.3 9.8 3.5 12 3.5C14.2 3.5 16 5.3 16 7.5V10.5" stroke="currentColor" stroke-width="1.7"/></svg>
-                    <input 
-                        class="input has-icon has-toggle" 
+                    <input
+                        class="input has-icon has-toggle"
                         :class="{ 'has-error': form.errors.password }"
-                        :type="showPassword ? 'text' : 'password'" 
-                        id="password" 
-                        placeholder="Masukkan kata sandi" 
-                        v-model="form.password" 
-                        required 
+                        :type="showPassword ? 'text' : 'password'"
+                        id="password"
+                        placeholder="Masukkan kata sandi"
+                        v-model="form.password"
+                        required
                         autocomplete="current-password"
                     >
                     <button type="button" class="input-toggle" @click="togglePasswordVisibility" aria-label="Tampilkan kata sandi">
@@ -139,7 +139,7 @@ const handleSSO = () => {
             <div class="row-between">
                 <div class="checkbox-row">
                     <input type="checkbox" id="remember" v-model="form.remember">
-                    <label for="remember">Ingat saya di perangkat ini</label>
+                    <label for="remember" class="text-text-secondary">Ingat saya di perangkat ini</label>
                 </div>
             </div>
 
