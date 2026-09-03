@@ -19,7 +19,7 @@ Route::get('/', function () {
     //     'laravelVersion' => Application::VERSION,
     //     'phpVersion' => PHP_VERSION,
     // ]);
-     return redirect()->route('login');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
@@ -32,4 +32,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
