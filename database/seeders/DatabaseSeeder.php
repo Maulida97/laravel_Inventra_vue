@@ -22,9 +22,21 @@ class DatabaseSeeder extends Seeder
         // ==========================================
         // DATA AWAL PENGGUNA (SEED DEFAULT USER)
         // ==========================================
-        User::factory()->create([
-            'name' => 'Administrator',
-            'email' => 'admin@inventra.com',
+        $user = User::where('email', 'admin@inventra.com')->first();
+        if (!$user) {
+            User::factory()->create([
+                'name' => 'Administrator',
+                'email' => 'admin@inventra.com',
+                'password' => bcrypt('password'),
+            ]);
+        }
+
+        // ==========================================
+        // SEED RBAC (ROLES & PERMISSIONS)
+        // ==========================================
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }
