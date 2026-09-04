@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * File: Category.php
+ * Module: Master Data
+ * Layer: Model
+ *
+ * Purpose:
+ * Merepresentasikan entitas Category di dalam Master Data.
+ * 
+ * Related Documentation:
+ * - docs/sprints/SPRINT-03-MASTER-DATA.md
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -32,3 +44,4 @@ class Category extends Model
         });
     }
 }
+

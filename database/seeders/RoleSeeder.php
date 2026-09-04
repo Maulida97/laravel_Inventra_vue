@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * File: RoleSeeder.php
+ * Module: RBAC
+ * Layer: Seeder
+ *
+ * Purpose:
+ * Mendefinisikan role dasar (SUPER_ADMIN, ADMIN, WAREHOUSE_MANAGER, 
+ * WAREHOUSE_STAFF, VIEWER) dan memasangkannya dengan permission.
+ *
+ * Responsibilities:
+ * - Membuat default roles jika belum ada.
+ * - Melakukan mapping permissions ke roles.
+ * - Men-generate akun dummy untuk keperluan testing.
+ *
+ * Related Documentation:
+ * - docs/sprints/SPRINT-02-RBAC.md
+ * - docs/07_PERMISSION_MATRIX.md
+ */
+
 namespace Database\Seeders;
 
 use App\Models\Permission;
@@ -14,8 +33,14 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get all permissions
+        // ============================================================
+        // Initialization
+        // ============================================================
         $allPermissions = Permission::all();
+
+        // ============================================================
+        // Roles Creation
+        // ============================================================
 
         // 1. Super Admin
         $superAdmin = Role::firstOrCreate([
@@ -25,14 +50,14 @@ class RoleSeeder extends Seeder
         $superAdmin->permissions()->sync($allPermissions->pluck('id'));
 
         // 2. Admin
-        $admin = Role::firstOrCreate([
+        $adminRole = Role::firstOrCreate([
             'name' => 'ADMIN',
             'description' => 'Administrator with almost all permissions except system settings',
         ]);
         $adminPermissions = $allPermissions->filter(function ($permission) {
             return !in_array($permission->name, ['setting.update', 'role.delete']);
         });
-        $admin->permissions()->sync($adminPermissions->pluck('id'));
+        $adminRole->permissions()->sync($adminPermissions->pluck('id'));
 
         // 3. Warehouse Manager
         $warehouseManager = Role::firstOrCreate([
@@ -75,20 +100,45 @@ class RoleSeeder extends Seeder
         });
         $viewer->permissions()->sync($viewerPermissions->pluck('id'));
 
-        // Assign default user to SUPER_ADMIN
-        $defaultUser = User::where('email', 'admin@inventra.com')->first();
-        if ($defaultUser) {
-            if (!$defaultUser->hasRole('SUPER_ADMIN')) {
-                $defaultUser->roles()->attach($superAdmin->id);
-            }
-        } else {
-            // Create default user if not exists
-            $defaultUser = User::factory()->create([
+        // ============================================================
+        // Dummy Users Assignment
+        // ============================================================
+
+        $usersToCreate = [
+            [
                 'name' => 'Super Administrator',
                 'email' => 'admin@inventra.com',
-                'password' => bcrypt('password'),
-            ]);
-            $defaultUser->roles()->attach($superAdmin->id);
+                'role' => $superAdmin->id,
+            ],
+            [
+                'name' => 'Warehouse Manager',
+                'email' => 'manager@inventra.com',
+                'role' => $warehouseManager->id,
+            ],
+            [
+                'name' => 'Warehouse Staff',
+                'email' => 'staff@inventra.com',
+                'role' => $warehouseStaff->id,
+            ],
+            [
+                'name' => 'Viewer Only',
+                'email' => 'viewer@inventra.com',
+                'role' => $viewer->id,
+            ]
+        ];
+
+        foreach ($usersToCreate as $userData) {
+            $user = User::firstOrCreate(
+                ['email' => $userData['email']],
+                [
+                    'name' => $userData['name'],
+                    'password' => bcrypt('password'),
+                ]
+            );
+
+            if (!$user->roles->contains($userData['role'])) {
+                $user->roles()->attach($userData['role']);
+            }
         }
     }
 }

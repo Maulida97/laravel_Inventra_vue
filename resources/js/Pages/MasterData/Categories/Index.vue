@@ -1,3 +1,12 @@
+<!--
+File: Index.vue
+Module: Master Data (Categories)
+Layer: Page
+Purpose: Menampilkan daftar data Categories beserta fungsionalitas pencarian dan paginasi.
+
+Related Documentation:
+- docs/sprints/SPRINT-03-MASTER-DATA.md
+-->
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -90,3 +99,4 @@ const destroy = (id) => {
         </div>
     </AuthenticatedLayout>
 </template>
+

@@ -1,9 +1,28 @@
 <?php
 
+/**
+ * File: UnitController.php
+ * Module: Master Data
+ * Layer: Controller
+ *
+ * Purpose:
+ * Menangani HTTP request untuk entitas Unit.
+ *
+ * Responsibilities:
+ * - Menerima request CRUD dari pengguna.
+ * - Menggunakan Form Request untuk validasi input.
+ * - Mengembalikan view Inertia.js.
+ * 
+ * Related Documentation:
+ * - docs/sprints/SPRINT-03-MASTER-DATA.md
+ */
+
 namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
 use App\Models\Unit;
+use App\Http\Requests\MasterData\StoreUnitRequest;
+use App\Http\Requests\MasterData\UpdateUnitRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -29,14 +48,9 @@ class UnitController extends Controller
         return Inertia::render('MasterData/Units/Form');
     }
 
-    public function store(Request $request)
+    public function store(StoreUnitRequest $request)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:units,code',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         Unit::create($validated);
 
@@ -51,14 +65,9 @@ class UnitController extends Controller
         ]);
     }
 
-    public function update(Request $request, Unit $unit)
+    public function update(UpdateUnitRequest $request, Unit $unit)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:units,code,' . $unit->id,
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         $unit->update($validated);
 
@@ -75,3 +84,5 @@ class UnitController extends Controller
             ->with('success', 'Unit deleted successfully.');
     }
 }
+
+

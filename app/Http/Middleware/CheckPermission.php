@@ -1,5 +1,22 @@
 <?php
 
+/**
+ * File: CheckPermission.php
+ * Module: RBAC
+ * Layer: Middleware
+ *
+ * Purpose:
+ * Melakukan pengecekan hak akses (permission) pada level rute (HTTP request).
+ *
+ * Responsibilities:
+ * - Mengintersepsi request.
+ * - Mengecek apakah authenticated user memiliki permission yang dibutuhkan.
+ * - Mengembalikan respon 403 Forbidden jika tidak berhak.
+ *
+ * Related Documentation:
+ * - docs/sprints/SPRINT-02-RBAC.md
+ */
+
 namespace App\Http\Middleware;
 
 use Closure;

@@ -1,9 +1,28 @@
 <?php
 
+/**
+ * File: CategoryController.php
+ * Module: Master Data
+ * Layer: Controller
+ *
+ * Purpose:
+ * Menangani HTTP request untuk entitas Category.
+ *
+ * Responsibilities:
+ * - Menerima request CRUD dari pengguna.
+ * - Menggunakan Form Request untuk validasi input.
+ * - Mengembalikan view Inertia.js.
+ * 
+ * Related Documentation:
+ * - docs/sprints/SPRINT-03-MASTER-DATA.md
+ */
+
 namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Http\Requests\MasterData\StoreCategoryRequest;
+use App\Http\Requests\MasterData\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -29,14 +48,9 @@ class CategoryController extends Controller
         return Inertia::render('MasterData/Categories/Form');
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:categories,code',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         Category::create($validated);
 
@@ -51,14 +65,9 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:categories,code,' . $category->id,
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         $category->update($validated);
 
@@ -75,3 +84,5 @@ class CategoryController extends Controller
             ->with('success', 'Category deleted successfully.');
     }
 }
+
+

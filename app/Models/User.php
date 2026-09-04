@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * File: User.php
+ * Module: Authentication & RBAC
+ * Layer: Model
+ *
+ * Purpose:
+ * Merepresentasikan entitas pengguna sistem.
+ *
+ * Responsibilities:
+ * - Mengelola autentikasi dan autentikasi token.
+ * - Mengelola profil dasar pengguna (name, email).
+ * - Mengecek kepemilikan Role dan Permission secara efisien.
+ *
+ * Related Documentation:
+ * - docs/sprints/SPRINT-01-AUTHENTICATION.md
+ * - docs/sprints/SPRINT-02-RBAC.md
+ */
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
