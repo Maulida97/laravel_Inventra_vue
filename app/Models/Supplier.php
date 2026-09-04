@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * File: Supplier.php
+ * Module: Master Data
+ * Layer: Model
+ *
+ * Purpose:
+ * Merepresentasikan entitas Supplier di dalam Master Data.
+ * 
+ * Related Documentation:
+ * - docs/sprints/SPRINT-03-MASTER-DATA.md
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -39,3 +51,4 @@ class Supplier extends Model
         });
     }
 }
+

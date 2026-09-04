@@ -1,9 +1,28 @@
 <?php
 
+/**
+ * File: DepartmentController.php
+ * Module: Master Data
+ * Layer: Controller
+ *
+ * Purpose:
+ * Menangani HTTP request untuk entitas Department.
+ *
+ * Responsibilities:
+ * - Menerima request CRUD dari pengguna.
+ * - Menggunakan Form Request untuk validasi input.
+ * - Mengembalikan view Inertia.js.
+ * 
+ * Related Documentation:
+ * - docs/sprints/SPRINT-03-MASTER-DATA.md
+ */
+
 namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
 use App\Models\Department;
+use App\Http\Requests\MasterData\StoreDepartmentRequest;
+use App\Http\Requests\MasterData\UpdateDepartmentRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -29,14 +48,9 @@ class DepartmentController extends Controller
         return Inertia::render('MasterData/Departments/Form');
     }
 
-    public function store(Request $request)
+    public function store(StoreDepartmentRequest $request)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:departments,code',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         Department::create($validated);
 
@@ -51,14 +65,9 @@ class DepartmentController extends Controller
         ]);
     }
 
-    public function update(Request $request, Department $department)
+    public function update(UpdateDepartmentRequest $request, Department $department)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:departments,code,' . $department->id,
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         $department->update($validated);
 
@@ -75,3 +84,5 @@ class DepartmentController extends Controller
             ->with('success', 'Department deleted successfully.');
     }
 }
+
+

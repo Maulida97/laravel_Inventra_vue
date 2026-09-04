@@ -1,5 +1,22 @@
 <?php
 
+/**
+ * File: Permission.php
+ * Module: RBAC
+ * Layer: Model
+ *
+ * Purpose:
+ * Merepresentasikan Hak Akses terkecil (atomic action) dalam sistem.
+ *
+ * Responsibilities:
+ * - Menyimpan definisi permission (misal: 'item.create', 'stock-in.view').
+ * - Menghubungkan permission ke banyak roles (belongsToMany).
+ *
+ * Related Documentation:
+ * - docs/sprints/SPRINT-02-RBAC.md
+ * - docs/07_PERMISSION_MATRIX.md
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
