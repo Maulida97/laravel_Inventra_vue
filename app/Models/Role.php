@@ -1,5 +1,22 @@
 <?php
 
+/**
+ * File: Role.php
+ * Module: RBAC
+ * Layer: Model
+ *
+ * Purpose:
+ * Merepresentasikan Role atau jabatan akses pengguna di dalam sistem.
+ *
+ * Responsibilities:
+ * - Menyimpan definisi role (SUPER_ADMIN, dll).
+ * - Menghubungkan role ke banyak permissions (belongsToMany).
+ * - Menghubungkan role ke banyak users (belongsToMany).
+ *
+ * Related Documentation:
+ * - docs/sprints/SPRINT-02-RBAC.md
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;

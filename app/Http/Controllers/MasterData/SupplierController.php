@@ -1,9 +1,28 @@
 <?php
 
+/**
+ * File: SupplierController.php
+ * Module: Master Data
+ * Layer: Controller
+ *
+ * Purpose:
+ * Menangani HTTP request untuk entitas Supplier.
+ *
+ * Responsibilities:
+ * - Menerima request CRUD dari pengguna.
+ * - Menggunakan Form Request untuk validasi input.
+ * - Mengembalikan view Inertia.js.
+ * 
+ * Related Documentation:
+ * - docs/sprints/SPRINT-03-MASTER-DATA.md
+ */
+
 namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
+use App\Http\Requests\MasterData\StoreSupplierRequest;
+use App\Http\Requests\MasterData\UpdateSupplierRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -29,17 +48,9 @@ class SupplierController extends Controller
         return Inertia::render('MasterData/Suppliers/Form');
     }
 
-    public function store(Request $request)
+    public function store(StoreSupplierRequest $request)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:suppliers,code',
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:50',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
-            'contact_person' => 'nullable|string|max:255',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         Supplier::create($validated);
 
@@ -54,17 +65,9 @@ class SupplierController extends Controller
         ]);
     }
 
-    public function update(Request $request, Supplier $supplier)
+    public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:suppliers,code,' . $supplier->id,
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:50',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
-            'contact_person' => 'nullable|string|max:255',
-            'status' => 'required|in:ACTIVE,INACTIVE',
-        ]);
+        $validated = $request->validated();
 
         $supplier->update($validated);
 
@@ -81,3 +84,5 @@ class SupplierController extends Controller
             ->with('success', 'Supplier deleted successfully.');
     }
 }
+
+
