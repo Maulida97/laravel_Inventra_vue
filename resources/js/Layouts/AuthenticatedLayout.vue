@@ -9,6 +9,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import { useCan } from '@/Composables/useCan';
 import { Toaster, toast } from 'vue-sonner';
 import 'vue-sonner/style.css';
 
@@ -17,6 +18,7 @@ import 'vue-sonner/style.css';
 // ==========================================
 const page = usePage();
 const user = page.props.auth.user;
+const { can } = useCan();
 
 // State Sidebar
 const isCollapsed = ref(false);
@@ -178,6 +180,20 @@ const handleMockFeature = (name) => {
                 <!-- Group Administration -->
                 <div class="nav-group">
                     <div class="nav-group-label">Administration</div>
+
+                    <Link 
+                        v-if="can('setting.view')" 
+                        :href="route('company-profile.edit')" 
+                        class="nav-item" 
+                        :class="{ 'active': route().current('company-profile.edit') }"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M1 21h22" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M9 7h1M9 11h1M9 15h1M14 7h1M14 11h1M14 15h1" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                        <span class="nav-label">Company Profile</span>
+                    </Link>
 
                     <button @click="handleMockFeature('Users')" class="nav-item">
                         <svg viewBox="0 0 24 24" fill="none">

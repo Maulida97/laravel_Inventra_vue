@@ -38,6 +38,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('units', \App\Http\Controllers\MasterData\UnitController::class);
         Route::resource('suppliers', \App\Http\Controllers\MasterData\SupplierController::class);
     });
+
+    // Company Profile & System Settings Routes
+    Route::middleware('permission:setting.view')->group(function () {
+        Route::get('/settings/company', [\App\Http\Controllers\MasterData\CompanyProfileController::class, 'edit'])->name('company-profile.edit');
+        Route::post('/settings/company', [\App\Http\Controllers\MasterData\CompanyProfileController::class, 'update'])
+            ->middleware('permission:setting.update')
+            ->name('company-profile.update');
+    });
 });
 
 require __DIR__ . '/auth.php';

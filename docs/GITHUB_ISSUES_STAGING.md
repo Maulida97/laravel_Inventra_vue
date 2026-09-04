@@ -12,9 +12,9 @@ Dokumen ini memetakan seluruh item backlog dan rencana pengerjaan ke dalam tiket
 * **User Story**: 
   > Sebagai developer, saya ingin menginisialisasi proyek Laravel dan menghubungkannya ke PostgreSQL agar saya memiliki framework backend yang berjalan stabil.
 * **Tasks**:
-  - [ ] Buat proyek Laravel 11/12 di folder lokal.
-  - [ ] Konfigurasi `.env` untuk menghubungkan database ke container `inventory-postgres`.
-  - [ ] Uji fungsionalitas CLI database (`php artisan db:show`).
+  - [x] Buat proyek Laravel 11/12 di folder lokal.
+  - [x] Konfigurasi `.env` untuk menghubungkan database ke container `inventory-postgres`.
+  - [x] Uji fungsionalitas CLI database (`php artisan db:show`).
 * **Acceptance Criteria**:
   - Aplikasi Laravel berjalan pada rute default di port `8000`.
   - Koneksi database terverifikasi sukses tanpa error.
@@ -25,10 +25,10 @@ Dokumen ini memetakan seluruh item backlog dan rencana pengerjaan ke dalam tiket
 * **User Story**:
   > Sebagai user, saya ingin berpindah halaman secara cepat tanpa reload (Single Page Application) menggunakan antarmuka Vue 3 berbasis Inertia.js.
 * **Tasks**:
-  - [ ] Install Inertia.js server-side adapter pada Laravel.
-  - [ ] Setup Inertia middleware `HandleInertiaRequests` pada rute web.
-  - [ ] Install NPM dependencies (`vue`, `@inertiajs/vue3`, `@vitejs/plugin-vue`).
-  - [ ] Konfigurasi `vite.config.js` untuk Vue 3 dan Inertia.
+  - [x] Install Inertia.js server-side adapter pada Laravel.
+  - [x] Setup Inertia middleware `HandleInertiaRequests` pada rute web.
+  - [x] Install NPM dependencies (`vue`, `@inertiajs/vue3`, `@vitejs/plugin-vue`).
+  - [x] Konfigurasi `vite.config.js` untuk Vue 3 dan Inertia.
 * **Acceptance Criteria**:
   - Kompilasi aset `npm run dev` & `npm run build` sukses.
   - Halaman dikirim secara asinkron lewat Inertia response.
@@ -39,9 +39,9 @@ Dokumen ini memetakan seluruh item backlog dan rencana pengerjaan ke dalam tiket
 * **User Story**:
   > Sebagai frontend developer, saya ingin mengintegrasikan Tailwind CSS dengan token desain resmi agar tampilan konsisten.
 * **Tasks**:
-  - [ ] Install Tailwind CSS dan buat file `tailwind.config.js`.
-  - [ ] Masukkan token warna (`bg`, `surface`, `secondary`, `accent`, `text`) dari template `inventra_admin_dashboard.html`.
-  - [ ] Impor font Google "Plus Jakarta Sans" dan tetapkan sebagai default font family.
+  - [x] Install Tailwind CSS dan buat file `tailwind.config.js`.
+  - [x] Masukkan token warna (`bg`, `surface`, `secondary`, `accent`, `text`) dari template `inventra_admin_dashboard.html`.
+  - [x] Impor font Google "Plus Jakarta Sans" dan tetapkan sebagai default font family.
 * **Acceptance Criteria**:
   - Tailwind CSS terkompilasi melalui Vite.
   - Utilitas styling warna custom bekerja dengan benar pada template Vue.
@@ -52,8 +52,8 @@ Dokumen ini memetakan seluruh item backlog dan rencana pengerjaan ke dalam tiket
 * **User Story**:
   > Sebagai user, saya ingin melihat tata letak halaman yang seragam dan responsif sejak pertama kali membuka aplikasi.
 * **Tasks**:
-  - [ ] Buat layout layout Guest (`GuestLayout.vue`) dan Authenticated (`AuthenticatedLayout.vue`).
-  - [ ] Buat halaman sambutan awal (`Welcome.vue`) yang bersih dan menggunakan token visual Inventra.
+  - [x] Buat layout layout Guest (`GuestLayout.vue`) dan Authenticated (`AuthenticatedLayout.vue`).
+  - [x] Buat halaman sambutan awal (`Welcome.vue`) yang bersih dan menggunakan token visual Inventra.
 * **Acceptance Criteria**:
   - Base layout responsif di desktop maupun perangkat mobile.
 
@@ -65,18 +65,18 @@ Dokumen ini memetakan seluruh item backlog dan rencana pengerjaan ke dalam tiket
 * **Milestone**: Phase 1 — Identity & Access Control
 * **Labels**: `auth`, `backend`, `frontend`, `P0`
 * **Tasks**:
-  - [ ] Setup skema user login, password hashing, dan session management.
-  - [ ] Buat halaman `Login.vue` berbasis Inertia.
-  - [ ] Buat Middleware pembatas rute terautentikasi dan login rate limiting.
-  - [ ] Implementasikan pencatatan audit log untuk kejadian login/logout.
+  - [x] Setup skema user login, password hashing, dan session management.
+  - [x] Buat halaman `Login.vue` berbasis Inertia.
+  - [x] Buat Middleware pembatas rute terautentikasi dan login rate limiting.
+  - [x] Implementasikan pencatatan audit log untuk kejadian login/logout.
 
 ### Issue #6: [RBAC-001] Setup Multi-level Role & Permission System
 * **Milestone**: Phase 1 — Identity & Access Control
 * **Labels**: `rbac`, `backend`, `P0`
 * **Tasks**:
-  - [ ] Buat tabel `roles`, `permissions`, dan tabel relasinya.
-  - [ ] Buat fungsi otorisasi backend (Custom Policies / Gates).
-  - [ ] Impor matriks hak akses standard dari `07_PERMISSION_MATRIX.md`.
+  - [x] Buat tabel `roles`, `permissions`, dan tabel relasinya.
+  - [x] Buat fungsi otorisasi backend (Custom Policies / Gates).
+  - [x] Impor matriks hak akses standard dari `07_PERMISSION_MATRIX.md`.
 
 ### Issue #7: [RBAC-002] Implement Scoped Data Authorization
 * **Milestone**: Phase 1 — Identity & Access Control
@@ -93,8 +93,8 @@ Dokumen ini memetakan seluruh item backlog dan rencana pengerjaan ke dalam tiket
 * **Milestone**: Phase 2 — Master Data & Catalog
 * **Labels**: `master-data`, `backend`, `frontend`, `P0`
 * **Tasks**:
-  - [ ] Buat CRUD & validasi untuk Department, Category, Unit, dan Supplier.
-  - [ ] Implementasikan deaktivasi / status *is_active* (soft deletion) untuk master data.
+  - [x] Buat CRUD & validasi untuk Department, Category, Unit, dan Supplier.
+  - [x] Implementasikan deaktivasi / status *is_active* (soft deletion) untuk master data.
 
 ### Issue #9: [ITEM-001] Implement Item Catalog & Unit Conversion Logic
 * **Milestone**: Phase 2 — Master Data & Catalog
