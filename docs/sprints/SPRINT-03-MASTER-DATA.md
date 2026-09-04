@@ -51,6 +51,7 @@ Membangun pengelolaan master data yang:
 Category
 Unit
 Supplier
+Company Profile & Settings
 Status Management
 CRUD
 Validation
