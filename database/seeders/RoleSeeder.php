@@ -111,6 +111,16 @@ class RoleSeeder extends Seeder
                 'role' => $superAdmin->id,
             ],
             [
+                'name' => 'Super Administrator Backup',
+                'email' => 'superadmin@inventra.com',
+                'role' => $superAdmin->id,
+            ],
+            [
+                'name' => 'Administrator',
+                'email' => 'administrator@inventra.com',
+                'role' => $adminRole->id,
+            ],
+            [
                 'name' => 'Warehouse Manager',
                 'email' => 'manager@inventra.com',
                 'role' => $warehouseManager->id,
