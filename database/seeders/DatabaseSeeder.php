@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             CompanyProfileSeeder::class,
             MasterDataSeeder::class, // Added for Sprint 4 onwards
+            WarehouseSeeder::class, // Added for Sprint 5
         ]);
     }
 }

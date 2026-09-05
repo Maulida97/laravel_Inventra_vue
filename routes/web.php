@@ -40,6 +40,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('items', \App\Http\Controllers\MasterData\ItemController::class);
     });
 
+    // Inventory Routes (Warehouse & Physical Location)
+    Route::resource('warehouses', \App\Http\Controllers\Inventory\WarehouseController::class);
+    Route::resource('locations', \App\Http\Controllers\Inventory\LocationController::class);
+
     // Company Profile & System Settings Routes
     Route::middleware('permission:setting.view')->group(function () {
         Route::get('/settings/company', [\App\Http\Controllers\MasterData\CompanyProfileController::class, 'edit'])->name('company-profile.edit');

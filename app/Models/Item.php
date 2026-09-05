@@ -49,6 +49,16 @@ class Item extends Model
     }
 
     /**
+     * Get the warehouses and primary location associated with the item.
+     */
+    public function warehouses()
+    {
+        return $this->belongsToMany(Warehouse::class, 'item_warehouse')
+                    ->withPivot('primary_location_id')
+                    ->withTimestamps();
+    }
+
+    /**
      * Scope a query to search items by code, sku, barcode, or name.
      */
     public function scopeSearch(Builder $query, ?string $search): Builder

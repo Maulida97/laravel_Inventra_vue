@@ -94,4 +94,25 @@ class User extends Authenticatable
             $query->where('name', $permissionName);
         })->exists();
     }
+
+    /**
+     * Get the warehouses assigned to the user.
+     */
+    public function warehouses(): BelongsToMany
+    {
+        return $this->belongsToMany(Warehouse::class);
+    }
+
+    /**
+     * Check if user has access to a given warehouse.
+     */
+    public function hasWarehouseAccess(Warehouse|int $warehouse): bool
+    {
+        if ($this->hasRole('SUPER_ADMIN')) {
+            return true;
+        }
+
+        $warehouseId = $warehouse instanceof Warehouse ? $warehouse->id : $warehouse;
+        return $this->warehouses()->where('warehouses.id', $warehouseId)->exists();
+    }
 }

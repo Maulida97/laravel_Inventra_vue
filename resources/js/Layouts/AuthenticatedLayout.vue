@@ -151,12 +151,30 @@ const handleMockFeature = (name) => {
                 <div class="nav-group">
                     <div class="nav-group-label">Operations</div>
 
-                    <button @click="handleMockFeature('Warehouse')" class="nav-item">
+                    <Link 
+                        :href="route('warehouses.index')" 
+                        class="nav-item"
+                        :class="{ 'active': route().current('warehouses.*') }"
+                    >
                         <svg viewBox="0 0 24 24" fill="none">
                             <path d="M3 21V9L12 3L21 9V21H15V14H9V21H3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
                         </svg>
-                        <span class="nav-label">Warehouse</span>
-                    </button>
+                        <span class="nav-label">Warehouses</span>
+                    </Link>
+
+                    <Link 
+                        :href="route('locations.index')" 
+                        class="nav-item"
+                        :class="{ 'active': route().current('locations.*') }"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M3 3H10V10H3V3Z" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M14 3H21V10H14V3Z" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M14 14H21V21H14V14Z" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M3 14H10V21H3V14Z" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                        <span class="nav-label">Locations (Bin)</span>
+                    </Link>
 
                     <button @click="handleMockFeature('Assets')" class="nav-item">
                         <svg viewBox="0 0 24 24" fill="none">
