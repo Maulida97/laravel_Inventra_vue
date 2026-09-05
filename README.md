@@ -1,59 +1,230 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Inventra
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Inventra is a modern Inventory & Asset Management System designed to streamline inventory tracking, asset lifecycle management, and related operations.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Inventra is a web-based application built to solve the complexities of tracking inventory and assets across different departments and units. The main goal of the system is to provide a centralized, role-based platform where users can securely manage master data, monitor stock levels, and handle asset assignments efficiently. It is designed for internal use by company administrators, staff, and management.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Implemented
+* **Authentication:** Secure login and session management.
+* **Role-Based Access Control (RBAC):** Granular permission and role management system.
+* **Master Data Management:**
+  * Company Profile Settings
+  * Departments Management
+  * Units Management
+  * Categories Management
+  * Suppliers Management
 
-## Learning Laravel
+### Planned / In Progress
+* Inventory Tracking and Management
+* Asset Lifecycle Management
+* Purchasing and Sales Modules
+* Advanced Reporting and Analytics
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Tech Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend
+* Laravel 12.0
+* PHP ^8.2
 
-## Laravel Sponsors
+### Frontend
+* Vue 3 (v3.4.0)
+* Inertia.js (^2.0.0)
+* Tailwind CSS (v3.2.1)
+* Vite (v7.0.7)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Database
+* SQLite (Default)
+* PostgreSQL 17 (via Docker)
 
-### Premium Partners
+### Infrastructure
+* Docker & Docker Compose
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Development Tools
+* Node.js & npm
+* PHPUnit
 
-## Contributing
+## Architecture Overview
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Inventra follows a modular monolith architecture built on top of Laravel and Inertia.js. It leverages standard MVC patterns in the backend and component-based UI in the frontend, communicating seamlessly without building a separate API layer.
 
-## Code of Conduct
+For detailed architecture documentation, refer to the following:
+* [`docs/architecture/SYSTEM_ARCHITECTURE.md`](docs/architecture/SYSTEM_ARCHITECTURE.md)
+* [`docs/architecture/MODULE_ARCHITECTURE.md`](docs/architecture/MODULE_ARCHITECTURE.md)
+* [`docs/architecture/DATA_FLOW.md`](docs/architecture/DATA_FLOW.md)
+* [`docs/architecture/SECURITY_ARCHITECTURE.md`](docs/architecture/SECURITY_ARCHITECTURE.md)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Project Structure
 
-## Security Vulnerabilities
+* `app/`: Contains the core PHP/Laravel backend logic (Controllers, Models, Middleware).
+* `database/`: Holds database migrations, seeders, and SQLite database file.
+* `docs/`: Comprehensive project documentation, including PRD, feature decisions, and architecture.
+* `resources/`: Contains frontend assets, including Vue components (`resources/js/`) and CSS (`resources/css/`).
+* `routes/`: Application routing definitions (`web.php`, `auth.php`).
+* `tests/`: Automated tests (Feature and Unit tests).
+* `public/`: The web root directory containing compiled assets and the entry point `index.php`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Requirements
+
+* PHP 8.2 or higher
+* Composer
+* Node.js & npm
+* SQLite or PostgreSQL
+* Docker and Docker Compose (Optional, but recommended for database)
+* Git
+
+## Installation
+
+### Using Docker (Recommended for Database)
+
+1. Clone the repository and enter the directory:
+   ```bash
+   git clone <repository-url>
+   cd laravel_Inventra_vue
+   ```
+2. Set up the environment configuration:
+   ```bash
+   cp .env.example .env
+   ```
+   *Update the database connection in `.env` to use PostgreSQL as defined in the project's Compose file:*
+   ```env
+   DB_CONNECTION=pgsql
+   DB_HOST=127.0.0.1
+   DB_PORT=5433
+   DB_DATABASE=inventory_management
+   DB_USERNAME=inventory_app
+   DB_PASSWORD=inventory_app_password
+   ```
+3. Start the Docker containers (PostgreSQL database):
+   ```bash
+   docker compose up -d
+   ```
+4. Install PHP dependencies:
+   ```bash
+   composer install
+   ```
+5. Install Node.js dependencies:
+   ```bash
+   npm install
+   ```
+6. Generate the application key:
+   ```bash
+   php artisan key:generate
+   ```
+7. Run database migrations and seeders:
+   ```bash
+   php artisan migrate --seed
+   ```
+8. Build frontend assets:
+   ```bash
+   npm run build
+   ```
+
+### Local Development (SQLite)
+
+If you prefer to use the default SQLite database:
+1. Ensure `DB_CONNECTION=sqlite` is set in your `.env`.
+2. Follow steps 1, 2, 4, 5, 6, and 8 from above.
+3. Create the SQLite database:
+   ```bash
+   touch database/database.sqlite
+   ```
+4. Run migrations and seeders:
+   ```bash
+   php artisan migrate --seed
+   ```
+
+## Environment Configuration
+
+The application requires environment variables to run. Copy the `.env.example` file to create your own `.env` file.
+* Do not commit your `.env` file to version control.
+* Update `APP_URL`, `DB_*` variables, and other configuration settings according to your local environment.
+
+## Database Setup
+
+Inventra uses standard Laravel migrations and seeders.
+* **Migrations**: Define the schema for users, roles, permissions, master data, and company profiles.
+* **Seeders**: Pre-populate the database with essential roles, permissions, and initial master data (e.g., `RoleSeeder`, `PermissionSeeder`).
+
+To refresh and seed the database during development:
+```bash
+php artisan migrate:fresh --seed
+```
+
+## Running the Application
+
+1. Start the backend server:
+   ```bash
+   php artisan serve
+   ```
+2. In a separate terminal window, start the frontend development server:
+   ```bash
+   npm run dev
+   ```
+3. Access the application at `http://localhost:8000`.
+
+## Testing
+
+The project includes PHPUnit for automated testing, with test cases organized in the `tests/` directory.
+
+To run the test suite:
+```bash
+php artisan test
+```
+* Includes **Feature tests** for application features.
+* Includes **Unit tests** for specific components.
+
+## Development Workflow
+
+1. Understand the requirement.
+2. Inspect the existing implementation.
+3. Understand the architecture using the `docs/` folder.
+4. Plan changes.
+5. Implement the feature or fix.
+6. Test using PHPUnit and manual testing.
+7. Review the code.
+8. Update related documentation in the `docs/` folder.
+
+## Documentation
+
+### Product
+* [Product Requirements Document (PRD)](docs/00_PRD.md)
+* [Product Vision](docs/01_PRODUCT_VISION.md)
+* [Feature Decisions](docs/02_FEATURE_DECISIONS.md)
+* [Modules](docs/03_MODULES.md)
+* [User Flow](docs/04_USER_FLOW.md)
+
+### Architecture & Database
+* [Architecture: System](docs/architecture/SYSTEM_ARCHITECTURE.md)
+* [Architecture: Modules](docs/architecture/MODULE_ARCHITECTURE.md)
+* [Architecture: Data Flow](docs/architecture/DATA_FLOW.md)
+* [Architecture: Security](docs/architecture/SECURITY_ARCHITECTURE.md)
+* [Database Schema](docs/05_DATABASE.md)
+* [API Documentation](docs/06_API.md)
+
+### Permissions & Development
+* [Permission Matrix](docs/07_PERMISSION_MATRIX.md)
+* [Roadmap](docs/08_ROADMAP.md)
+* [Backlog](docs/09_BACKLOG.md)
+* [Code Documentation Standard](docs/10_CODE_DOCUMENTATION_STANDARD.md)
+* [Development Sprints](docs/LISTSPRINT.md)
+
+## Security
+
+* The `.env` file must not be committed to the repository.
+* No credentials or secrets should be hardcoded in the codebase.
+* Authentication and authorization (RBAC) must be respected for all protected routes.
+* Input must be validated using Laravel Form Requests.
+* Dependencies must be kept updated to avoid known vulnerabilities.
+* Security-sensitive changes must undergo code review.
+
+## Contribution
+
+For contributions, please follow the established development workflow and consult the documentation in `docs/10_CODE_DOCUMENTATION_STANDARD.md`. Maintain the modular architecture and adhere to Laravel and Vue.js best practices.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+No explicit license has been determined for this project yet.
