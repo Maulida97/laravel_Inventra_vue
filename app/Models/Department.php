@@ -43,5 +43,13 @@ class Department extends Model
               ->orWhere('name', 'ilike', "%{$search}%");
         });
     }
+
+    /**
+     * Get the items that are allowed in this department.
+     */
+    public function items()
+    {
+        return $this->belongsToMany(Item::class);
+    }
 }
 

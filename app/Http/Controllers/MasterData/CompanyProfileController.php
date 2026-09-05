@@ -22,6 +22,7 @@ namespace App\Http\Controllers\MasterData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterData\UpdateCompanyProfileRequest;
 use App\Models\CompanyProfile;
+use App\Services\Setting\CompanyProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -29,6 +30,10 @@ use Inertia\Response;
 
 class CompanyProfileController extends Controller
 {
+    public function __construct(
+        private CompanyProfileService $companyProfileService
+    ) {}
+
     /**
      * Menampilkan form edit profil & pengaturan perusahaan.
      */
@@ -80,21 +85,12 @@ class CompanyProfileController extends Controller
     public function update(UpdateCompanyProfileRequest $request): RedirectResponse
     {
         $companyProfile = CompanyProfile::getSettings();
-        $validated = $request->validated();
 
-        if ($request->hasFile('logo')) {
-            // Hapus logo lama jika ada
-            if ($companyProfile->logo_path && Storage::disk('public')->exists($companyProfile->logo_path)) {
-                Storage::disk('public')->delete($companyProfile->logo_path);
-            }
-
-            $path = $request->file('logo')->store('company', 'public');
-            $validated['logo_path'] = $path;
-        }
-
-        unset($validated['logo']);
-
-        $companyProfile->update($validated);
+        $this->companyProfileService->updateProfile(
+            $companyProfile,
+            $request->validated(),
+            $request->file('logo')
+        );
 
         return redirect()->route('company-profile.edit')
             ->with('success', 'Profil & Pengaturan Perusahaan berhasil diperbarui.');
