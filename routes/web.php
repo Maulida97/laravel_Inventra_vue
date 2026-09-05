@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('categories', \App\Http\Controllers\MasterData\CategoryController::class);
         Route::resource('units', \App\Http\Controllers\MasterData\UnitController::class);
         Route::resource('suppliers', \App\Http\Controllers\MasterData\SupplierController::class);
+        Route::resource('items', \App\Http\Controllers\MasterData\ItemController::class);
     });
 
     // Company Profile & System Settings Routes

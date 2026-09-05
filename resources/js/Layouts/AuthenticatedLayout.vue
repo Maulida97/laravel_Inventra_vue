@@ -110,14 +110,19 @@ const handleMockFeature = (name) => {
                 <div class="nav-group">
                     <div class="nav-group-label">Inventory</div>
                     
-                    <button @click="handleMockFeature('Items')" class="nav-item">
+                    <Link 
+                        v-if="can('master.view')"
+                        :href="route('items.index')" 
+                        class="nav-item"
+                        :class="{ 'active': route().current('items.*') }"
+                    >
                         <svg viewBox="0 0 24 24" fill="none">
                             <path d="M20 7L12 3L4 7L12 11L20 7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
                             <path d="M4 7V17L12 21V11" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
                             <path d="M20 7V17L12 21" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
                         </svg>
                         <span class="nav-label">Items</span>
-                    </button>
+                    </Link>
 
                     <button @click="handleMockFeature('Stock In')" class="nav-item">
                         <svg viewBox="0 0 24 24" fill="none">
